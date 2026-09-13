@@ -45,9 +45,15 @@ class WabEditorialBanner extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final wab = WabTheme.of(context);
-            final showMotto = motto != null && constraints.maxWidth >= _mottoWidth;
-            final showKitLabel = constraints.maxWidth >= _kitLabelWidth;
-            final showSubtitle = constraints.maxWidth >= _subtitleWidth;
+            // The thresholds are widths at a text scale of 1; a viewer who has
+            // turned text size up needs proportionally more room for the same
+            // parts.
+            final textScale =
+                MediaQuery.textScalerOf(context).scale(WabType.body) / WabType.body;
+            final room = constraints.maxWidth / textScale;
+            final showMotto = motto != null && room >= _mottoWidth;
+            final showKitLabel = room >= _kitLabelWidth;
+            final showSubtitle = room >= _subtitleWidth;
             return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -71,12 +77,12 @@ class WabEditorialBanner extends StatelessWidget {
               ),
               const SizedBox(width: 14),
               SizedBox(
-                width: 72,
+                width: 84,
                 child: Text(
                   kitLabel,
                   style: const TextStyle(
                     fontFamily: kWabMonoFamily,
-                    fontSize: WabType.annotation,
+                    fontSize: WabType.gloss,
                     letterSpacing: 2.6,
                     height: 1.45,
                   ).copyWith(color: wab.mutedColor),
@@ -117,7 +123,7 @@ class WabEditorialBanner extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontFamily: kWabMonoFamily,
-                        fontSize: WabType.annotation,
+                        fontSize: WabType.gloss,
                         letterSpacing: 3.1,
                       ).copyWith(color: wab.mutedColor),
                     ),
@@ -135,7 +141,7 @@ class WabEditorialBanner extends StatelessWidget {
                   style: const TextStyle(
                     fontFamily: kWabKaiFamily,
                     fontFamilyFallback: kWabKaiFallback,
-                    fontSize: WabType.annotation,
+                    fontSize: WabType.gloss,
                     letterSpacing: 1.6,
                   ).copyWith(color: wab.mutedColor),
                 ),
@@ -151,11 +157,11 @@ class WabEditorialBanner extends StatelessWidget {
 }
 
 /// Below this the motto is dropped.
-const double _mottoWidth = 720;
+const double _mottoWidth = 1000;
 
 /// Below this the kit label and its rule are dropped too.
-const double _kitLabelWidth = 520;
+const double _kitLabelWidth = 600;
 
 /// Below this only the title survives; the subtitle would be squeezed to a
 /// column of single characters.
-const double _subtitleWidth = 460;
+const double _subtitleWidth = 520;

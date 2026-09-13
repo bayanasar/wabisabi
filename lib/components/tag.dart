@@ -42,7 +42,7 @@ class WabVerticalTag extends StatelessWidget {
               color: wab.textColor,
               fontFamily: kWabKaiFamily,
               fontFamilyFallback: kWabKaiFallback,
-              fontSize: WabType.caption,
+              fontSize: WabType.gloss,
               height: 1.15,
             ),
           ),

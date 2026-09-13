@@ -81,6 +81,10 @@ a proportion needs choosing, derive it from φ rather than picking a round
 number. The checker rejects a font size written as a number, so a new size
 means adding a rung and justifying it.
 
+**Nothing is read below `WabType.gloss`** (11.93). A brush face at 8–10 px
+thins out on a screen, and muted ink makes it worse, so the two rungs under
+`gloss` are deprecated and the checker rejects them in `lib/` and the catalogue.
+
 ## Deliberate non-goals
 
 - **No texture image assets in the kit.** Every material texture is painted. It

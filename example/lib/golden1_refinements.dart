@@ -26,7 +26,7 @@ Widget refinedRulesSection(BuildContext context) {
               style: TextStyle(
                 color: wab.mutedColor,
                 fontFamily: kWabMonoFamily,
-                fontSize: WabType.annotation,
+                fontSize: WabType.gloss,
               ),
             ),
           ],
@@ -60,7 +60,7 @@ Widget refinedRulesSection(BuildContext context) {
                   style: TextStyle(
                     color: wab.mutedColor,
                     fontFamily: kWabMonoFamily,
-                    fontSize: WabType.annotation,
+                    fontSize: WabType.gloss,
                   ),
                 ),
               ],
@@ -81,7 +81,7 @@ Widget refinedRulesSection(BuildContext context) {
                         '四 摺 紙 格',
                         style: TextStyle(
                           color: wab.mutedColor,
-                          fontSize: WabType.annotation,
+                          fontSize: WabType.gloss,
                           letterSpacing: 1.2,
                         ),
                       ),
@@ -94,7 +94,7 @@ Widget refinedRulesSection(BuildContext context) {
                   style: TextStyle(
                     color: wab.mutedColor,
                     fontFamily: kWabMonoFamily,
-                    fontSize: WabType.annotation,
+                    fontSize: WabType.gloss,
                   ),
                 ),
               ],
@@ -112,7 +112,7 @@ Widget refinedRulesSection(BuildContext context) {
             style: TextStyle(
               color: wab.mutedColor,
               fontFamily: kWabMonoFamily,
-              fontSize: WabType.annotation,
+              fontSize: WabType.gloss,
             ),
           ),
           const Spacer(),
@@ -170,7 +170,7 @@ Widget refinedButtonsSection(BuildContext context) {
                 style: TextStyle(
                   color: wab.mutedColor,
                   fontFamily: kWabMonoFamily,
-                  fontSize: WabType.annotation,
+                  fontSize: WabType.gloss,
                 ),
               ),
             ],
@@ -192,7 +192,7 @@ Widget refinedButtonsSection(BuildContext context) {
               style: TextStyle(
                 color: wab.mutedColor,
                 fontFamily: kWabMonoFamily,
-                fontSize: WabType.annotation,
+                fontSize: WabType.gloss,
               ),
             ),
           ],
@@ -214,7 +214,7 @@ Widget refinedButtonsSection(BuildContext context) {
               style: TextStyle(
                 color: wab.mutedColor,
                 fontFamily: kWabMonoFamily,
-                fontSize: WabType.annotation,
+                fontSize: WabType.gloss,
               ),
             ),
           ],
@@ -238,7 +238,7 @@ Widget refinedButtonsSection(BuildContext context) {
               style: TextStyle(
                 color: wab.mutedColor,
                 fontFamily: kWabMonoFamily,
-                fontSize: WabType.annotation,
+                fontSize: WabType.gloss,
               ),
             ),
           ],

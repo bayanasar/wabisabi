@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- `WabType.gloss` (11.93) is now the smallest size text is set in. `WabCard`'s
+  description, `WabNotice`, `WabVerticalTag` and `WabEditorialBanner`'s kit
+  label, subtitle and motto move up to it; `WabNotice`'s title moves to `body`.
+  Components that used them grow slightly.
+- `tool/check_house_rules.dart` rejects the two rungs below `gloss`.
+
+### Deprecated
+
+- `WabType.annotation` and `WabType.caption` — below the reading floor. Use
+  `WabType.gloss`.
+
+### Fixed
+
+- `WabEditorialBanner` overflowed horizontally when the viewer's text size was
+  raised: the widths at which it drops its motto, kit label and subtitle did not
+  account for text scale.
+
 ## 0.1.0
 
 Breaking. Consumers pinning a tag are unaffected until they move the pin.

@@ -40,7 +40,7 @@ class WabNotice extends StatelessWidget {
               Container(
                 width: 8,
                 height: 8,
-                margin: const EdgeInsets.only(top: 3, right: 8),
+                margin: const EdgeInsets.only(top: 6, right: 8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: dotColor ?? wab.sealColor,
@@ -56,7 +56,7 @@ class WabNotice extends StatelessWidget {
                         color: wab.textColor,
                         fontFamily: kWabKaiFamily,
                         fontFamilyFallback: kWabKaiFallback,
-                        fontSize: WabType.caption,
+                        fontSize: WabType.body,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -68,7 +68,7 @@ class WabNotice extends StatelessWidget {
                           color: wab.mutedColor,
                           fontFamily: kWabKaiFamily,
                           fontFamilyFallback: kWabKaiFallback,
-                          fontSize: WabType.annotation,
+                          fontSize: WabType.gloss,
                         ),
                       ),
                     ],

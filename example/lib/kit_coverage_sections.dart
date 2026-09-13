@@ -10,7 +10,7 @@ import 'package:wabisabi/wabisabi.dart';
 TextStyle _caption(WabColors wab) => TextStyle(
       color: wab.mutedColor,
       fontFamily: kWabMonoFamily,
-      fontSize: WabType.annotation,
+      fontSize: WabType.gloss,
       height: 1.2,
     );
 
@@ -29,10 +29,16 @@ Widget _specimen(
         children: [
           SizedBox(width: width, height: height, child: child),
           const SizedBox(height: 3),
-          Text(label, style: _caption(wab)),
+          Text(_breakCamelCase(label), style: _caption(wab)),
         ],
       ),
     );
+
+final _camelHump = RegExp(r'(?<=[a-z])(?=[A-Z])');
+
+/// Lets a class name wrap between its words — WabPaper·Texture — instead of
+/// wherever the box runs out.
+String _breakCamelCase(String label) => label.replaceAll(_camelHump, '\u200B');
 
 /// 骨架 — page chrome: scaffolds, bars, legacy containers, nav furniture.
 Widget kitChromeSection(BuildContext context) {

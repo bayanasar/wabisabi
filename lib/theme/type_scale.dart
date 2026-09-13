@@ -11,17 +11,25 @@
 ///
 /// Flutter multiplies these by `MediaQuery.textScaler`, so they are the size at
 /// a scale factor of 1.
+///
+/// [gloss] is the reading floor. The two rungs below it are too small for a
+/// brush face on a screen — the strokes thin out before the counters close —
+/// so nothing a person has to read is set in them. They stay on the ladder,
+/// deprecated, so the series is still whole.
 abstract final class WabType {
   /// The ratio between adjacent rungs: the cube root of the golden section.
   static const double step = 1.1739849967;
 
-  /// 夾註 — interlinear annotation. `body / φ`.
+  /// 夾註 — interlinear annotation. `body / φ`. Below the reading floor.
+  @Deprecated('Below the reading floor; use WabType.gloss')
   static const double annotation = 8.65;
 
-  /// Caption under a specimen, a card's supporting line.
+  /// One rung above [annotation]. Below the reading floor.
+  @Deprecated('Below the reading floor; use WabType.gloss')
   static const double caption = 10.16;
 
-  /// 眉批 — badge and tag labels, banner subtitles.
+  /// 眉批 — the smallest size text is set in: captions, supporting lines,
+  /// badge and tag labels, banner subtitles.
   static const double gloss = 11.93;
 
   /// Body text, and the base the ladder is built from.

@@ -5,7 +5,7 @@
 //                  A shadow is pigment, not the absence of light.
 //   the ladder     No font size written as a number. Sizes come from WabType,
 //                  which is a golden-section scale; a literal is a size chosen
-//                  on its own.
+//                  on its own. Nothing below the reading floor, WabType.gloss.
 //
 // Both hold across lib/ and example/lib/, because a catalogue that breaks the
 // kit's own rules is how the rules stop being true.
@@ -29,6 +29,10 @@ final _wordBoundary = RegExp(r'[A-Za-z0-9_]');
 
 /// A font size written as a number rather than taken from the ladder.
 final _literalFontSize = RegExp(r'fontSize:\s*-?[0-9]');
+
+/// A rung below the reading floor. The analyzer flags these as deprecated, but
+/// an ignore comment silences the analyzer and not this.
+final _belowFloor = RegExp(r'WabType\.(annotation|caption)\b');
 
 final _lineComment = RegExp(r'^\s*//');
 
@@ -77,12 +81,20 @@ void main() {
           'to the ladder if the size is genuinely missing',
         );
       }
+
+      if (path != 'lib/theme/type_scale.dart' && _belowFloor.hasMatch(line)) {
+        problems.add(
+          '$where\n'
+          '    ${_belowFloor.firstMatch(line)![0]} is below the reading floor '
+          '— use WabType.gloss or larger',
+        );
+      }
     }
   }
 
   if (problems.isEmpty) {
     stdout.writeln('house rules ok — $files files, ink and paper only, '
-        'every size on the ladder');
+        'every size on the ladder and above the floor');
     return;
   }
 
