@@ -4,16 +4,31 @@
 
 ### Changed
 
-- `WabType.gloss` (11.93) is now the smallest size text is set in. `WabCard`'s
+- `WabType.gloss` (11.93) is now the smallest size text is set in. `WabCollectionCard`'s
   description, `WabNotice`, `WabVerticalTag` and `WabEditorialBanner`'s kit
   label, subtitle and motto move up to it; `WabNotice`'s title moves to `body`.
   Components that used them grow slightly.
 - `tool/check_house_rules.dart` rejects the two rungs below `gloss`.
+- Every lift in the kit is one soft stacked shadow falling to the lower right —
+  the one `WabContainer` already cast — deeper than before. `WabPaperLift`,
+  `WabCollectionCard`, `WabPanel`, `WabWoodSlab` and buttons now use it instead
+  of painted contact lines.
+- The dark theme casts that same shape in warm lamplight rather than an ink
+  shadow nobody can see on a dark ground.
+- Wood casts darker than paper; jade casts further and fainter.
+
+### Added
+
+- `wabLift`, `WabColors.lift` and `WabLift`: the kit's lift, on any decoration
+  or around any widget, with `strength` and `reach` to tune it, and
+  `WabLift.wood`, `WabLift.jade` and `WabLift.forSurface` presets.
+- `WAB_TEXTURE_LAMP_GLOW`.
 
 ### Deprecated
 
 - `WabType.annotation` and `WabType.caption` — below the reading floor. Use
   `WabType.gloss`.
+- `WabPaperLift.seed` — the lift no longer varies by seed.
 
 ### Fixed
 

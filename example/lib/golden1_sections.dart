@@ -447,25 +447,46 @@ Widget goldenCardsSection(BuildContext context) {
 
 Widget goldenShadowsSection(BuildContext context) {
   final wab = WabTheme.of(context);
-  Widget sample(String label, WabSurfaceKind kind) => Expanded(
+  final caption = TextStyle(color: wab.mutedColor, fontFamily: kWabMonoFamily, fontSize: WabType.gloss);
+  // The lift paints outside its child, so every tile keeps room to its lower
+  // right for the furthest reach on show.
+  Widget tile(String label, Widget lift, {bool keepsRoom = false}) => Expanded(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            WabPaperLift(
-              depth: 8,
-              child: SizedBox(height: 48, child: WabSurface(kind: kind, child: const SizedBox.expand())),
-            ),
-            const SizedBox(height: 2),
-            Text(label, textAlign: TextAlign.center, style: TextStyle(color: wab.mutedColor, fontFamily: kWabMonoFamily, fontSize: WabType.gloss)),
+            keepsRoom ? lift : Padding(padding: const EdgeInsets.only(right: 16, bottom: 16), child: lift),
+            Text(label, style: caption),
           ],
         ),
       );
-  return Row(
+  Widget surface(WabSurfaceKind kind) =>
+      SizedBox(height: 36, child: WabSurface(kind: kind, child: const SizedBox.expand()));
+  const gap = SizedBox(width: 8);
+
+  return Column(
     children: [
-      sample('紙 · 翹影\nPAPER LIFT', WabSurfaceKind.paper),
-      const SizedBox(width: 10),
-      sample('木 · 接觸影\nWOOD', WabSurfaceKind.woodGrain),
-      const SizedBox(width: 10),
-      sample('玉 · 接觸影\nJADE', WabSurfaceKind.jadeSheen),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          tile('紙 · WabLift()', WabLift(child: surface(WabSurfaceKind.paper))),
+          gap,
+          tile('木 · .wood', WabLift.wood(child: surface(WabSurfaceKind.woodGrain))),
+          gap,
+          tile('玉 · .jade', WabLift.jade(child: surface(WabSurfaceKind.jadeSheen))),
+        ],
+      ),
+      const SizedBox(height: 10),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          tile('reach: .5', WabLift(reach: .5, child: surface(WabSurfaceKind.paper))),
+          gap,
+          tile('strength: 2', WabLift(strength: 2, child: surface(WabSurfaceKind.paper))),
+          gap,
+          // WabPaperLift is a lift of that reach with the room for it kept.
+          tile('WabPaperLift\u200B(depth: 13)', WabPaperLift(depth: 13, child: surface(WabSurfaceKind.paper)), keepsRoom: true),
+        ],
+      ),
     ],
   );
 }

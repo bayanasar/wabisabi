@@ -68,6 +68,17 @@ for a lit edge, `paperWhite` (0xFFFAF6EC, 宣紙淡黃白) for a sheet. Reach fo
 colour already in the palette before adding one. `lib/` contains no
 `Colors.black`, no `Colors.white`, and no Material accent colour.
 
+**One lift, and in the dark it is light.** Everything lifted off the page casts
+the same thing: `wabLift` — three soft stacked layers falling to the lower right,
+no drawn edge. A shadow on a dark ground is invisible, so the dark theme casts
+the identical shape in `WAB_TEXTURE_LAMP_GLOW`, warm light burnt towards yellow.
+`strength` scales it and `reach` spreads it; `WabColors.lift` reads the theme,
+and `WabLift` wraps any widget.
+
+**Materials cast differently.** Wood is dense: paper's reach, darker
+(`WabLift.wood`). Jade lets light through: further reach, fainter
+(`WabLift.jade`). Buttons follow the same rule.
+
 **Text scaling.** Nothing in `lib/` boxes text at a height it cannot give back:
 the catalogue is clean from a scale factor of 1 through 2.5, and the sweep is in
 `example/test/catalogue_smoke_test.dart`. A board cell is the exception and says

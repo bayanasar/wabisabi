@@ -50,6 +50,12 @@ const int kTextureJadeVeinDark = 0xFFAFC0B5;
 // absence. Lifted off 0x000000 so it reads warm against paper.
 const int kTextureInk = 0xFF24231F;
 
+// 燈暈 — in the dark the kit casts no shadow, because a shadow on a dark
+// ground is invisible. Depth is lamplight instead, in the shape the shadow
+// would have had. Sampled from warm ambient light along a trim line at night:
+// the falloff's hue (36°), burnt yellower.
+const int kTextureLampGlow = 0xFFDEB77C;
+
 const int kTextureRubbingBase = 0xFF24231F;
 const int kTextureRubbingDeep = 0xFF10100E;
 const int kTextureRubbingDust = 0xFF8A877E;

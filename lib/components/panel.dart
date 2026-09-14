@@ -69,7 +69,6 @@ class WabPanel extends StatelessWidget {
     );
 
     return WabPaperLift(
-      seed: 53,
       child: WabSurface(
         kind: WabSurfaceKind.paper,
         clip: false,

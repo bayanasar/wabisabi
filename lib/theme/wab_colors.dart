@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../tokens/palette.dart';
-import '../tokens/texture.dart';
+import 'lift.dart';
 
 /// The kit's palette, carried on [ThemeData] as a [ThemeExtension] instead of
 /// on mutable statics.
@@ -127,28 +127,14 @@ class WabColors extends ThemeExtension<WabColors> {
 
   bool get isDark => brightness == Brightness.dark;
 
-  /// Drop shadow for ELEVATED surfaces — falls to the bottom-right. The stacked
-  /// shadows (decreasing opacity, increasing blur) read as a soft gradient.
-  List<BoxShadow> get elevationShadow {
-    final base = isDark ? WAB_TEXTURE_INK : WAB_LIGHT_TEXT;
-    return [
-      BoxShadow(
-        color: base.withValues(alpha: isDark ? 0.50 : 0.16),
-        blurRadius: 3,
-        offset: const Offset(2, 2),
-      ),
-      BoxShadow(
-        color: base.withValues(alpha: isDark ? 0.34 : 0.10),
-        blurRadius: 9,
-        offset: const Offset(4, 5),
-      ),
-      BoxShadow(
-        color: base.withValues(alpha: isDark ? 0.20 : 0.05),
-        blurRadius: 18,
-        offset: const Offset(8, 11),
-      ),
-    ];
-  }
+  /// What a lifted surface casts: [wabLift] for this theme's brightness —
+  /// ink by day, lamplight by night. [strength] scales how dark or bright it
+  /// is, [reach] how far it falls and how soft it is.
+  List<BoxShadow> lift({double strength = 1, double reach = 1}) =>
+      wabLift(dark: isDark, strength: strength, reach: reach);
+
+  /// The standard lift of an elevated surface: [lift] at its defaults.
+  List<BoxShadow> get elevationShadow => lift();
 
   @override
   WabColors copyWith({

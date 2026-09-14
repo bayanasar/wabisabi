@@ -12,6 +12,7 @@ export 'theme/wab_colors.dart';
 export 'theme/typography.dart';
 export 'theme/type_scale.dart';
 export 'theme/seal_text.dart';
+export 'theme/lift.dart';
 
 // Materials
 export 'materials/deckle_border.dart';
@@ -20,6 +21,7 @@ export 'materials/paper_texture.dart';
 export 'materials/paper_sheet.dart';
 export 'materials/paper_fold.dart';
 export 'materials/paper_lift.dart';
+export 'materials/lift.dart';
 export 'materials/fold_frame.dart';
 export 'materials/fiber_texture.dart';
 export 'materials/wood_grain.dart';

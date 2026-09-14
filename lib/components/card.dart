@@ -31,7 +31,6 @@ class WabCollectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final wab = WabTheme.of(context);
     return WabPaperLift(
-        seed: highlighted ? 67 : 31,
         child: WabSurface(
           kind: WabSurfaceKind.paper,
           clip: false,

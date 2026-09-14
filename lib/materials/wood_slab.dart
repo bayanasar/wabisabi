@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../theme/lift.dart';
 import '../theme/wab_theme.dart';
 import '../tokens/texture.dart';
 import 'wood_grain.dart';
@@ -38,12 +39,8 @@ class WabWoodSlab extends StatelessWidget {
         borderRadius: shape,
         boxShadow: lifted
             ? [
-                BoxShadow(
-                  color: WAB_TEXTURE_INK.withValues(alpha: dark ? .28 : .14),
-                  blurRadius: 5.5,
-                  spreadRadius: -.7,
-                  offset: const Offset(2.2, 3.0),
-                ),
+                // Wood is dense: its lift is darker than paper's.
+                ...wabLift(dark: dark, strength: 1.5, reach: .5),
               ]
             : const <BoxShadow>[],
       ),

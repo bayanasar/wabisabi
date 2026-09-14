@@ -42,6 +42,10 @@ const Color WAB_TEXTURE_JADE_VEIN_DARK = Color(kTextureJadeVeinDark);
 /// 墨 — every shadow and pressed edge in the kit. Never `Colors.black`.
 const Color WAB_TEXTURE_INK = Color(kTextureInk);
 
+/// 燈暈 — the amber falloff beneath a lit edge: what the dark theme casts
+/// where the light theme casts ink.
+const Color WAB_TEXTURE_LAMP_GLOW = Color(kTextureLampGlow);
+
 const Color WAB_TEXTURE_RUBBING_BASE = Color(kTextureRubbingBase);
 const Color WAB_TEXTURE_RUBBING_DEEP = Color(kTextureRubbingDeep);
 const Color WAB_TEXTURE_RUBBING_DUST = Color(kTextureRubbingDust);

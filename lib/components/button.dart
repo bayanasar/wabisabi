@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/wab_colors.dart';
+import '../theme/lift.dart';
 import '../theme/wab_theme.dart';
 import '../tokens/material.dart';
 import '../tokens/spacing.dart';
@@ -171,22 +172,11 @@ class _WabButtonState extends State<WabButton> {
       WabButtonVisualState.disabled => .88,
       _ => 1.0,
     };
+    // Hover lifts further; pressed nearly sits down. Ink by day, lamplight by
+    // night — see wabLift.
     final interactionShadow = switch (state) {
-      WabButtonVisualState.hover => [
-          BoxShadow(
-            color: WAB_TEXTURE_INK.withValues(alpha: dark ? .32 : .16),
-            blurRadius: 8,
-            spreadRadius: -.5,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      WabButtonVisualState.pressed => [
-          BoxShadow(
-            color: WAB_TEXTURE_INK.withValues(alpha: dark ? .18 : .07),
-            blurRadius: 1.5,
-            offset: const Offset(0, .8),
-          ),
-        ],
+      WabButtonVisualState.hover => wabLift(dark: dark, strength: 1.2, reach: .7),
+      WabButtonVisualState.pressed => wabLift(dark: dark, strength: .6, reach: .15),
       _ => const <BoxShadow>[],
     };
 
@@ -271,6 +261,7 @@ class _WabButtonState extends State<WabButton> {
           ),
           dark,
           state,
+          strength: 1.5,
         ),
       WabMaterialKind.cloth => WabDeckleSurface(
           seed: widget.seed ?? WAB_DECKLE_SEED,
@@ -294,6 +285,8 @@ class _WabButtonState extends State<WabButton> {
           ),
           dark,
           state,
+          reach: 1.6,
+          strength: .8,
         ),
       WabMaterialKind.baiwen => _restingShadow(
           ClipRRect(
@@ -307,19 +300,17 @@ class _WabButtonState extends State<WabButton> {
     };
   }
 
+  /// A resting button's lift. [strength] and [reach] follow the material:
+  /// wood casts darker, jade further and fainter — as [WabLift] does.
   Widget _restingShadow(
     Widget child,
     bool dark,
-    WabButtonVisualState state,
-  ) {
+    WabButtonVisualState state, {
+    double strength = 1,
+    double reach = 1,
+  }) {
     final shadows = state == WabButtonVisualState.normal
-        ? [
-            BoxShadow(
-              color: WAB_TEXTURE_INK.withValues(alpha: dark ? .30 : .14),
-              blurRadius: 5,
-              offset: const Offset(1.5, 2.5),
-            ),
-          ]
+        ? wabLift(dark: dark, strength: strength, reach: .45 * reach)
         : const <BoxShadow>[];
     return Container(
       decoration: BoxDecoration(boxShadow: shadows),
