@@ -17,7 +17,7 @@ class Golden1Showcase extends StatefulWidget {
 }
 
 class _Golden1ShowcaseState extends State<Golden1Showcase> {
-  final _sectionKeys = List<GlobalKey>.generate(13, (_) => GlobalKey());
+  final _sectionKeys = List<GlobalKey>.generate(_nav.length, (_) => GlobalKey());
   int _selected = 0;
   bool _check = true;
   int _radio = 0;
@@ -41,10 +41,11 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
     '07 表單 · INPUTS',
     '08 標記 · BADGES & SEALS',
     '09 卡片 · CARDS & PANELS',
-    '10 陰影 · SHADOWS',
-    '11 明暗 · LIGHT & DARK',
-    '12 骨架 · SCAFFOLD & CHROME',
-    '13 零件 · ODDS & ENDS',
+    '10 容器 · CONTAINERS',
+    '11 陰影 · SHADOWS',
+    '12 明暗 · LIGHT & DARK',
+    '13 骨架 · SCAFFOLD & CHROME',
+    '14 零件 · ODDS & ENDS',
   ];
 
   static const _titles = [
@@ -57,10 +58,11 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
     '07  表單 | INPUTS',
     '08  標記 | BADGES & SEALS',
     '09  卡片 | CARDS & PANELS',
-    '10  陰影 | SHADOWS',
-    '11  明暗 | LIGHT & DARK',
-    '12  骨架 | SCAFFOLD & CHROME',
-    '13  零件 | ODDS & ENDS',
+    '10  容器 | CONTAINERS',
+    '11  陰影 | SHADOWS',
+    '12  明暗 | LIGHT & DARK',
+    '13  骨架 | SCAFFOLD & CHROME',
+    '14  零件 | ODDS & ENDS',
   ];
 
   static const _subtitles = [
@@ -73,6 +75,7 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
     '欄界語言延伸至現代輸入控件',
     '源自印章與題簽的標記語言',
     '內容容器與信息組織',
+    '承托內容的紙面：抬起、輕抬、只有邊界',
     'WabLift：日間投墨，夜間燈光，強弱與遠近可調',
     '行墨與拓片的雙重世界',
     '頁面骨架、題頭與導覽家具',
@@ -434,13 +437,14 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
         ),
       7 => goldenMarksSection(context),
       8 => goldenCardsSection(context),
-      9 => goldenShadowsSection(context),
-      10 => goldenLightDarkSection(
+      9 => goldenContainersSection(context),
+      10 => goldenShadowsSection(context),
+      11 => goldenLightDarkSection(
           context,
           isDark: wab.isDark,
           onToggle: widget.onToggleTheme,
         ),
-      11 => kitChromeSection(context),
+      12 => kitChromeSection(context),
       _ => const KitOddsAndEndsSection(),
     };
 

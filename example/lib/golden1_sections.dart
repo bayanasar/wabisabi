@@ -445,6 +445,90 @@ Widget goldenCardsSection(BuildContext context) {
   );
 }
 
+Widget goldenContainersSection(BuildContext context) {
+  final wab = WabTheme.of(context);
+  final caption = TextStyle(color: wab.mutedColor, fontFamily: kWabMonoFamily, fontSize: WabType.gloss);
+  Widget body(String title, String note) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: TextStyle(color: wab.textColor, fontSize: WabType.body, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 2),
+          Text(note, style: TextStyle(color: wab.mutedColor, fontSize: WabType.gloss)),
+        ],
+      );
+  Widget labelled(String label, Widget child) => Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [child, Text(label, style: caption)],
+        ),
+      );
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          labelled('WabContainer', WabContainer(padding: const EdgeInsets.fromLTRB(12, 8, 12, 8), child: body('框', '主底，抬起'))),
+          labelled('WabLiteContainer', WabLiteContainer(child: body('輕框', '面底，抬起'))),
+          labelled(
+            'WabContent\u200BContainer',
+            WabContentContainer(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 2),
+              margin: const EdgeInsets.all(8),
+              child: body('內容', '無底，僅邊界'),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 12),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          labelled(
+            'wab.lift()',
+            Padding(
+              padding: const EdgeInsets.only(right: 16, bottom: 14),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: wab.surfaceColor,
+                  borderRadius: BorderRadius.circular(3),
+                  boxShadow: wab.lift(),
+                ),
+                child: const SizedBox(height: 28, width: double.infinity),
+              ),
+            ),
+          ),
+          labelled(
+            'WabLift(child: …)',
+            Padding(
+              padding: const EdgeInsets.only(right: 16, bottom: 14),
+              child: WabLift(
+                borderRadius: BorderRadius.circular(3),
+                child: WabSealMark(text: '寂', size: 28, seed: 5),
+              ),
+            ),
+          ),
+          labelled(
+            'strength: 1.6',
+            Padding(
+              padding: const EdgeInsets.only(right: 16, bottom: 14),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: wab.primaryColor,
+                  borderRadius: BorderRadius.circular(3),
+                  boxShadow: wab.lift(strength: 1.6),
+                ),
+                child: const SizedBox(height: 28, width: double.infinity),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 Widget goldenShadowsSection(BuildContext context) {
   final wab = WabTheme.of(context);
   final caption = TextStyle(color: wab.mutedColor, fontFamily: kWabMonoFamily, fontSize: WabType.gloss);

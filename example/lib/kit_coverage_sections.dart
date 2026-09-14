@@ -40,7 +40,7 @@ final _camelHump = RegExp(r'(?<=[a-z])(?=[A-Z])');
 /// wherever the box runs out.
 String _breakCamelCase(String label) => label.replaceAll(_camelHump, '\u200B');
 
-/// 骨架 — page chrome: scaffolds, bars, legacy containers, nav furniture.
+/// 骨架 — page chrome: scaffolds, bars, nav furniture.
 Widget kitChromeSection(BuildContext context) {
   final wab = WabTheme.of(context);
   return SingleChildScrollView(
@@ -94,20 +94,6 @@ Widget kitChromeSection(BuildContext context) {
                 painter: WabTexturePainter(isDark: wab.isDark),
                 child: const SizedBox.expand(),
               ),
-            ),
-            _specimen(
-              wab,
-              'WabContainer',
-              128,
-              46,
-              WabContainer(child: Text('框 · framed', style: _caption(wab))),
-            ),
-            _specimen(
-              wab,
-              'WabLiteContainer',
-              128,
-              46,
-              WabLiteContainer(child: Text('輕框 · lite', style: _caption(wab))),
             ),
             _specimen(
               wab,
