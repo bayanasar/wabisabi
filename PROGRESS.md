@@ -3,7 +3,7 @@
 <!-- progress -->
 updated: 2026-09-13
 owner: bayanasar
-stage: 0.1.0 merged to main but untagged; reading-floor fix (small text) on `fix/legible-small-type`, awaiting review
+stage: 0.1.0 and the reading floor are on main, untagged; one lift for the kit (dark theme as lamplight) in review
 <!-- /progress -->
 
 ## What this is
@@ -15,13 +15,18 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Sealed
 
-- Contract checks on `09fa2235` — `flutter analyze` no issues;
-  `check_layering` 52 files, no cycles; `check_public_api` 208 names, 0
-  violations; `check_house_rules` 57 files clean; `export_tokens` leaves
+- Contract checks on the lift branch tip — `flutter analyze` no issues;
+  `check_layering` 54 files, no cycles; `check_public_api` 211 names, 0
+  violations; `check_house_rules` 59 files clean; `export_tokens` leaves
   `web/quarto/` unchanged.
-- Tests on `09fa2235` — `flutter test` 10 green; `cd example && flutter test`
-  45 green (38 catalogue sweeps over 13 widths and 5 text scales, 7 reading-floor
-  widths).
+- Tests on the lift branch tip — `flutter test` 13 green (3 for the lift);
+  `cd example && flutter test` 45 green (38 catalogue sweeps over 13 widths and
+  5 text scales, 7 reading-floor widths).
+- The light theme was pixel-identical before and after the first lamplight pass
+  (1600 px screenshot diff, no changed pixels); later passes changed it on
+  purpose.
+- The release web build of the catalogue was reviewed by eye in a desktop
+  browser while the lift was tuned.
 - Small text was real, not taste — on `ee522b6d`, measuring every text run as
   drawn (transforms included) at a 1024 px viewport: 116 runs under 7 px, from
   8.65 px type in cells shrunk to 0.59x.
@@ -35,11 +40,12 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Not sealed
 
-- The fix in a real browser or device — screenshots so far come from
-  `flutter test` with the bundled fonts loaded, not from a rasteriser a viewer
-  uses. Headless Chrome 153 was obtained, but the release web build stalled
-  after `flutter_bootstrap.js` (CDN and `--no-web-resources-cdn` builds alike).
-  If hinting differs on device, 11.93 px kai may still read small.
+- The reading floor on a phone or tablet — the desktop browser review covers
+  web only. If hinting differs on device, 11.93 px kai may still read small.
+- Any screenshot of a shadow from `flutter test` — it sets
+  `debugDisableShadows`, drawing every `BoxShadow` unblurred with hard stepped
+  edges. Set it to false in the test and back before it ends, or judge in a
+  browser.
 - CI on the fix branch — the workflow steps were run locally only.
 - No golden images (#13) — a visual regression in a painter passes every check
   above.
@@ -56,10 +62,22 @@ matters is enforced by scripts in `tool/`, not by prose.
   its type below the floor; below 292 px the sections overflow.
 - 2026-09-13 Icons and seal faces are exempt from the floor test — they are
   fitted to their box as marks, not set as text.
+- 2026-09-13 One lift for the whole kit, `wabLift` — soft stacked shadows, no
+  drawn edge — because painted contact lines and lamp hairlines read as hard
+  black and white lines on review; the stacked shadow `WabContainer` already
+  cast was the one that looked natural.
+- 2026-09-13 The dark theme casts the lift's exact shape in
+  `WAB_TEXTURE_LAMP_GLOW` — an ink shadow on a dark ground is invisible, and
+  light on only some of the edges a shadow covers looked wrong.
+- 2026-09-13 Wood: paper's reach, 1.5x strength; jade: 1.6x reach, 0.8x
+  strength — dense wood shades darker; jade lets light through. At 0.6x jade's
+  wider lift nearly vanished.
 
 ## Open
 
 - 0.1.0 is not tagged; consumers pinned to a tag still see 0.0.4.
+- #23 one lift, dark theme as lamplight; #24 containers catalogue cell — in
+  review.
 - #9 bare `CupertinoApp` palette falls back to system colours.
 - #10 `WabBanner` fixed height overflows at raised text size.
 - #21 `WabEditorialBanner` overflows at phone width with 2.5x text.
