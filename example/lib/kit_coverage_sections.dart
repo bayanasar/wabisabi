@@ -164,11 +164,11 @@ Widget kitChromeSection(BuildContext context) {
         ),
         const SizedBox(height: 9),
         SizedBox(
-          height: 66,
+          height: 82,
           child: WabBanner(
             title: '侘 寂',
             subtitle: 'WABBANNER · MASTHEAD',
-            height: 66,
+            height: 82,
             leading: WabSealMark(text: '侘', size: 22, seed: 31),
             trailing: [
               WabStatusBadge('WabBanner', kind: WabBadgeKind.neutral),

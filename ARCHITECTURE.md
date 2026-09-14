@@ -73,6 +73,10 @@ the catalogue is clean from a scale factor of 1 through 2.5, and the sweep is in
 `example/test/catalogue_smoke_test.dart`. A board cell is the exception and says
 so — it is a printed specimen at exact geometry, and the viewer's text
 preference magnifies the whole cell rather than growing type inside a fixed box.
+A cell is never drawn smaller than designed: the board drops columns instead,
+and on a phone the cell reflows to the sheet's width.
+`example/test/reading_floor_test.dart` measures every run of text as it lands
+on screen, transforms included.
 
 **The numbers are golden.** `WabType` is a φ^⅓ ladder off a base of 14, so every
 third rung is exactly φ apart. The catalogue's cell is a golden rectangle and

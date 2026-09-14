@@ -18,7 +18,7 @@ Widget goldenPaletteSection(BuildContext context) {
     ('朱砂\nSEAL', WAB_TEXTURE_CINNABAR_BASE_LIGHT),
   ];
   Widget chip((String, Color) c) => SizedBox(
-        width: 80,
+        width: 66,
         child: Column(
           children: [
             Container(
@@ -384,41 +384,64 @@ Widget goldenMarksSection(BuildContext context) {
 
 Widget goldenCardsSection(BuildContext context) {
   final wab = WabTheme.of(context);
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(
-        child: WabCollectionCard(
-          icon: Icon(Icons.auto_awesome_outlined, color: wab.textColor, size: 22),
-          title: '基礎卡片',
-          description: '題名、內容與動作保持克制。',
-          buttonLabel: '落 款',
-          onPressed: () {},
+  final card = WabCollectionCard(
+    icon: Icon(Icons.auto_awesome_outlined, color: wab.textColor, size: 22),
+    title: '基礎卡片',
+    description: '題名、內容與動作保持克制。',
+    buttonLabel: '落 款',
+    onPressed: () {},
+  );
+  final panel = WabPanel(
+    title: '面板標題',
+    trailing: const WabStatusBadge('PANEL'),
+    child: Text('無外框紙面；內部分隔仍使用淡墨細線。', style: TextStyle(color: wab.mutedColor, fontSize: WabType.gloss)),
+  );
+  final container = WabContentContainer(
+    padding: const EdgeInsets.all(11),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('內容區塊', style: TextStyle(color: wab.textColor, fontWeight: FontWeight.w500, fontSize: WabType.gloss)),
+        const SizedBox(height: 8),
+        Text('WabContent\u200BContainer\n只負責內容邊界，不憑空製造 elevation。', style: TextStyle(color: wab.mutedColor, fontSize: WabType.gloss, height: 1.4)),
+      ],
+    ),
+  );
+
+  // Three across needs a full cell. A cell reflowed to a phone's width puts the
+  // container under the other two and scrolls, as the longer sections do.
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      if (constraints.maxWidth >= 400) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: card),
+            const SizedBox(width: 9),
+            Expanded(child: panel),
+            const SizedBox(width: 9),
+            Expanded(child: container),
+          ],
+        );
+      }
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: card),
+                const SizedBox(width: 9),
+                Expanded(child: panel),
+              ],
+            ),
+            const SizedBox(height: 9),
+            container,
+          ],
         ),
-      ),
-      const SizedBox(width: 9),
-      Expanded(
-        child: WabPanel(
-          title: '面板標題',
-          trailing: const WabStatusBadge('PANEL'),
-          child: Text('無外框紙面；內部分隔仍使用淡墨細線。', style: TextStyle(color: wab.mutedColor, fontSize: WabType.gloss)),
-        ),
-      ),
-      const SizedBox(width: 9),
-      Expanded(
-        child: WabContentContainer(
-          padding: const EdgeInsets.all(11),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('內容區塊', style: TextStyle(color: wab.textColor, fontWeight: FontWeight.w500, fontSize: WabType.gloss)),
-              const SizedBox(height: 8),
-              Text('WabContent\u200BContainer\n只負責內容邊界，不憑空製造 elevation。', style: TextStyle(color: wab.mutedColor, fontSize: WabType.gloss, height: 1.4)),
-            ],
-          ),
-        ),
-      ),
-    ],
+      );
+    },
   );
 }
 

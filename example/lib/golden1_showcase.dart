@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:wabisabi/wabisabi.dart';
 
@@ -80,10 +82,14 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
   /// φ. The board's proportions come from it, as the type ladder does.
   static const _phi = 1.6180339887;
 
-  /// The width one board cell gets on a full-size desktop board. Every section
-  /// is composed against it, so the narrow layout renders at the same geometry
-  /// and scales the whole cell down rather than re-flowing each specimen.
+  /// The width a board cell is composed against. Cells are drawn at this size
+  /// — never shrunk, because shrinking a cell shrinks its type below the
+  /// reading floor — so the board holds as many columns as fit, up to three.
   static const _cellDesignWidth = 460.0;
+
+  /// The narrowest a cell reflows to: a 320 px phone's sheet. Past it, the
+  /// viewer's text-size setting magnifies the cell only as far as fits.
+  static const _cellMinWidth = 292.0;
 
   /// Each cell is a golden rectangle — φ wider than it is tall.
   static const _cellDesignHeight = _cellDesignWidth / _phi;
@@ -98,16 +104,6 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
   static const _boardTop = 10.0;
   static const _boardBottom = 30.0;
 
-  int get _rowCount => (_nav.length / 3).ceil();
-
-  /// A fold at every row boundary, so the sheet creases between cells.
-  List<double> get _desktopFolds {
-    final total = _boardTop + _boardBottom + _rowCount * _cellDesignHeight;
-    return [
-      for (var i = 1; i < _rowCount; i++)
-        (_boardTop + i * _cellDesignHeight) / total,
-    ];
-  }
 
   void _jumpTo(int index) {
     setState(() => _selected = index);
@@ -280,43 +276,70 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
 
   Widget _board(BuildContext context) {
     final wab = WabTheme.of(context);
-    return SingleChildScrollView(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const gutter = 16.0;
+        final scale = _textScale(context);
+        final cellWidth = _cellDesignWidth * scale;
+        final cellHeight = _cellDesignHeight * scale;
+        final columns = ((constraints.maxWidth - gutter * 2) / cellWidth)
+            .floor()
+            .clamp(1, 3);
+        final rows = (_nav.length / columns).ceil();
+        // The cells sit centred on the sheet; the folds follow them.
+        final inset = (constraints.maxWidth - columns * cellWidth) / 2;
+        final height = _boardTop + _boardBottom + rows * cellHeight;
+
+        return SingleChildScrollView(
           child: WabPaperSheet(
             isDark: wab.isDark,
-            horizontalFolds: _desktopFolds,
-            verticalFolds: const [.333333, .666667],
+            horizontalFolds: [
+              for (var i = 1; i < rows; i++)
+                (_boardTop + i * cellHeight) / height,
+            ],
+            verticalFolds: [
+              for (var i = 1; i < columns; i++)
+                (inset + i * cellWidth) / constraints.maxWidth,
+            ],
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, _boardTop, 16, _boardBottom),
+              padding: const EdgeInsets.only(top: _boardTop, bottom: _boardBottom),
               child: Column(
                 children: [
-                  for (var row = 0; row < _rowCount; row++)
-                    _row([
-                      for (var slot = 0; slot < 3; slot++)
-                        if (row * 3 + slot < _nav.length) row * 3 + slot,
-                    ]),
+                  for (var row = 0; row < rows; row++)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (var slot = 0; slot < columns; slot++)
+                          if (row * columns + slot < _nav.length)
+                            _scaledCell(context, row * columns + slot, scale)
+                          else
+                            SizedBox(width: cellWidth),
+                      ],
+                    ),
                 ],
               ),
             ),
           ),
         );
+      },
+    );
   }
 
-  /// Narrow layout: one column of cells, each drawn at [_cellDesignWidth] and
-  /// scaled to the sheet. The sections were composed for a fixed cell — they
-  /// use Expanded and Spacer against a known box — so scaling the finished cell
-  /// keeps the composition intact where re-flowing it would not.
+  /// Narrow layout: one column of cells. Where the sheet is narrower than a
+  /// cell, the cell is laid out at the sheet's width instead of being shrunk,
+  /// so its type stays at the size it was set in.
   ///
-  /// Past native size it only magnifies as far as the viewer asked for with
-  /// their text-size setting, and only as far as the sheet has room for.
+  /// The viewer's text-size setting magnifies the whole cell, as far as the
+  /// sheet has room for.
   Widget _mobileBoard() {
     return LayoutBuilder(
       builder: (context, constraints) {
         final wab = WabTheme.of(context);
         const sheetPadding = 14.0;
         final available = constraints.maxWidth - sheetPadding * 2;
-        final fit = available / _cellDesignWidth;
-        final scale =
-            (fit.clamp(.4, 1.0) * _textScale(context)).clamp(.4, fit).toDouble();
+        final width =
+            (available / _textScale(context)).clamp(_cellMinWidth, _cellDesignWidth);
+        final scale = math.min(_textScale(context), available / width);
 
         return SingleChildScrollView(
           child: WabPaperSheet(
@@ -328,7 +351,7 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
               child: Column(
                 children: [
                   for (var i = 0; i < _nav.length; i++) ...[
-                    _scaledCell(context, i, scale),
+                    _scaledCell(context, i, scale, width: width),
                     const SizedBox(height: 18),
                   ],
                 ],
@@ -340,16 +363,23 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
     );
   }
 
-  Widget _scaledCell(BuildContext context, int index, double scale) {
-    const height = _cellDesignHeight;
+  /// A cell laid out at [width] and magnified by [scale]. A cell narrower than
+  /// designed keeps its area: what no longer fits across wraps downward.
+  Widget _scaledCell(
+    BuildContext context,
+    int index,
+    double scale, {
+    double width = _cellDesignWidth,
+  }) {
+    final height = _cellDesignHeight * _cellDesignWidth / width;
     return SizedBox(
-      width: _cellDesignWidth * scale,
+      width: width * scale,
       height: height * scale,
       child: FittedBox(
         fit: BoxFit.contain,
         alignment: Alignment.topCenter,
         child: _cell(
-          width: _cellDesignWidth,
+          width: width,
           height: height,
           child: _section(context, index),
         ),
@@ -377,39 +407,6 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
   /// The viewer's text-size preference as a plain multiplier.
   double _textScale(BuildContext context) =>
       MediaQuery.textScalerOf(context).scale(WabType.body) / WabType.body;
-
-  Widget _row(List<int> indices) {
-    return SizedBox(
-      height: _cellDesignHeight,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (var slot = 0; slot < 3; slot++)
-            if (slot >= indices.length)
-              const Expanded(child: SizedBox.shrink())
-            else
-              Expanded(
-              child: ClipRect(
-                child: Transform.scale(
-                  scaleX: 1.002,
-                  scaleY: 1.002,
-                  alignment: Alignment.topLeft,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.topCenter,
-                    child: _cell(
-                      width: _cellDesignWidth,
-                      height: _cellDesignHeight,
-                      child: _section(context, indices[slot]),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
 
   Widget _section(BuildContext context, int index) {
     final wab = WabTheme.of(context);
