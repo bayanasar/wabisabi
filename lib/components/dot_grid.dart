@@ -53,6 +53,11 @@ class WabInkDot extends StatelessWidget {
 /// Dumb widget: it takes a flat, row-major array of cell [states] and a
 /// [styleOf] mapping from a state to an [WabInkDotStyle]. It carries no domain
 /// semantics (no "week", "life", etc.) — consumers own that meaning.
+///
+/// The grid keeps its intrinsic dot geometry under a tighter parent. Consumers
+/// that need it to fit a smaller viewport should scale or scroll it explicitly,
+/// matching the pre-painter overflow contract rather than silently shrinking
+/// or clipping the dot field.
 class WabDotGrid<S> extends StatelessWidget {
   const WabDotGrid({
     super.key,
@@ -84,16 +89,19 @@ class WabDotGrid<S> extends StatelessWidget {
     final styles = List<WabInkDotStyle>.unmodifiable(states.map(styleOf));
     final width = cols == 0 ? 0.0 : cols * dotSize + (cols - 1) * gap;
     final height = rows == 0 ? 0.0 : rows * dotSize + (rows - 1) * gap;
-    return SizedBox(
-      width: width,
-      height: height,
-      child: CustomPaint(
-        painter: _WabDotGridPainter(
-          rows: rows,
-          cols: cols,
-          styles: styles,
-          dotSize: dotSize,
-          gap: gap,
+    return UnconstrainedBox(
+      alignment: Alignment.topLeft,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: CustomPaint(
+          painter: _WabDotGridPainter(
+            rows: rows,
+            cols: cols,
+            styles: styles,
+            dotSize: dotSize,
+            gap: gap,
+          ),
         ),
       ),
     );

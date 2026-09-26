@@ -53,4 +53,41 @@ void main() {
       expect(size.height, rows * 11 + (rows - 1) * 4);
     },
   );
+
+  testWidgets(
+    'tight parent does not shrink the painter below intrinsic grid geometry',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      const rows = 65;
+      const cols = 53;
+      final states = List<int>.filled(rows * cols, 0);
+
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: SizedBox(
+            width: 600,
+            height: 400,
+            child: WabDotGrid<int>(
+              rows: rows,
+              cols: cols,
+              states: states,
+              styleOf: (_) => const WabInkDotStyle(
+                color: Color(0xFF111111),
+              ),
+              dotSize: 11,
+              gap: 4,
+            ),
+          ),
+        ),
+      );
+
+      final paint = tester.widget<CustomPaint>(find.byType(CustomPaint));
+      final paintSize = tester.getSize(find.byWidget(paint));
+      expect(paintSize.width, cols * 11 + (cols - 1) * 4);
+      expect(paintSize.height, rows * 11 + (rows - 1) * 4);
+    },
+  );
 }
