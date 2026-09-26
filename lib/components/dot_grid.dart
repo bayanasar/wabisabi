@@ -80,8 +80,8 @@ class WabDotGrid<S> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styles = List<WabInkDotStyle>.unmodifiable(states.map(styleOf));
-    final width = cols * dotSize + (cols - 1) * gap;
-    final height = rows * dotSize + (rows - 1) * gap;
+    final width = cols == 0 ? 0.0 : cols * dotSize + (cols - 1) * gap;
+    final height = rows == 0 ? 0.0 : rows * dotSize + (rows - 1) * gap;
     return SizedBox(
       width: width,
       height: height,
