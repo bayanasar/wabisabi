@@ -62,8 +62,10 @@ class WabDotGrid<S> extends StatelessWidget {
     required this.styleOf,
     this.dotSize = 10,
     this.gap = 3,
-  }) : assert(states.length == rows * cols,
-            'states.length must equal rows * cols');
+  }) : assert(
+          states.length == rows * cols,
+          'states.length must equal rows * cols',
+        );
 
   final int rows;
   final int cols;
@@ -161,5 +163,7 @@ typedef DotGrid<S> = WabDotGrid<S>;
 @Deprecated('Renamed to WabInkDot. This alias goes at the next major version.')
 typedef InkDot = WabInkDot;
 
-@Deprecated('Renamed to WabInkDotStyle. This alias goes at the next major version.')
+@Deprecated(
+  'Renamed to WabInkDotStyle. This alias goes at the next major version.',
+)
 typedef InkDotStyle = WabInkDotStyle;
