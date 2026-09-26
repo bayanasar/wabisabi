@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 /// Visual style for a single [WabInkDot]. Pure data — no semantics.
@@ -78,28 +79,78 @@ class WabDotGrid<S> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (int r = 0; r < rows; r++)
-          Padding(
-            padding: EdgeInsets.only(bottom: r == rows - 1 ? 0 : gap),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (int c = 0; c < cols; c++)
-                  Padding(
-                    padding: EdgeInsets.only(right: c == cols - 1 ? 0 : gap),
-                    child: WabInkDot(
-                      style: styleOf(states[r * cols + c]),
-                      size: dotSize,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-      ],
+    final styles = List<WabInkDotStyle>.unmodifiable(states.map(styleOf));
+    final width = cols * dotSize + (cols - 1) * gap;
+    final height = rows * dotSize + (rows - 1) * gap;
+    return SizedBox(
+      width: width,
+      height: height,
+      child: CustomPaint(
+        painter: _WabDotGridPainter(
+          rows: rows,
+          cols: cols,
+          styles: styles,
+          dotSize: dotSize,
+          gap: gap,
+        ),
+      ),
     );
+  }
+}
+
+class _WabDotGridPainter extends CustomPainter {
+  const _WabDotGridPainter({
+    required this.rows,
+    required this.cols,
+    required this.styles,
+    required this.dotSize,
+    required this.gap,
+  });
+
+  final int rows;
+  final int cols;
+  final List<WabInkDotStyle> styles;
+  final double dotSize;
+  final double gap;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final radius = dotSize / 2;
+    final step = dotSize + gap;
+    final fill = Paint()..style = PaintingStyle.fill;
+    final stroke = Paint()..style = PaintingStyle.stroke;
+
+    for (var row = 0; row < rows; row++) {
+      final y = radius + row * step;
+      for (var col = 0; col < cols; col++) {
+        final style = styles[row * cols + col];
+        final center = Offset(radius + col * step, y);
+
+        fill.color = style.color;
+        canvas.drawCircle(center, radius, fill);
+
+        final borderColor = style.borderColor;
+        if (borderColor != null && style.borderWidth > 0) {
+          stroke
+            ..color = borderColor
+            ..strokeWidth = style.borderWidth;
+          canvas.drawCircle(
+            center,
+            (radius - style.borderWidth / 2).clamp(0, radius),
+            stroke,
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _WabDotGridPainter oldDelegate) {
+    return rows != oldDelegate.rows ||
+        cols != oldDelegate.cols ||
+        dotSize != oldDelegate.dotSize ||
+        gap != oldDelegate.gap ||
+        !listEquals(styles, oldDelegate.styles);
   }
 }
 
