@@ -84,10 +84,23 @@ void main() {
         ),
       );
 
+      // A grid larger than its parent reports the overflow in debug builds,
+      // exactly as the widget-per-dot Column did before the painter. That
+      // report is the contract under test, so consume that one error and
+      // assert what it is instead of swallowing whatever was thrown.
+      final overflow = tester.takeException();
+      expect(overflow, isFlutterError);
+      expect(overflow.toString(), contains('overflowed'));
+
       final paint = tester.widget<CustomPaint>(find.byType(CustomPaint));
       final paintSize = tester.getSize(find.byWidget(paint));
       expect(paintSize.width, cols * 11 + (cols - 1) * 4);
       expect(paintSize.height, rows * 11 + (rows - 1) * 4);
+      expect(paintSize.height, 971);
+
+      // The 600x400 parent did not shrink the painter.
+      expect(paintSize.width, greaterThan(600));
+      expect(paintSize.height, greaterThan(400));
     },
   );
 }
