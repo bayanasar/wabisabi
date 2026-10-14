@@ -103,4 +103,66 @@ void main() {
       expect(paintSize.height, greaterThan(400));
     },
   );
+
+  testWidgets(
+    'render and element counts do not grow with the number of dots',
+    (tester) async {
+      // The widget-per-dot grid this painter replaced built one Container per
+      // dot: 13911 render objects and 20802 elements for a 65x53 grid. Layout
+      // and rebuild work scale with those counts, so pin that a 3445-dot grid
+      // now builds exactly the same subtree as a 2x2 one.
+      int renderObjectsUnder(Finder finder) {
+        var count = 0;
+        void visit(RenderObject object) {
+          count++;
+          object.visitChildren(visit);
+        }
+
+        visit(tester.renderObject(finder));
+        return count;
+      }
+
+      int elementsUnder(Finder finder) {
+        var count = 0;
+        void visit(Element element) {
+          count++;
+          element.visitChildElements(visit);
+        }
+
+        visit(tester.element(finder));
+        return count;
+      }
+
+      Future<(int, int)> countsFor(int rows, int cols) async {
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Center(
+              child: WabDotGrid<int>(
+                key: ValueKey<String>('grid-$rows-$cols'),
+                rows: rows,
+                cols: cols,
+                states: List<int>.generate(rows * cols, (index) => index % 3),
+                styleOf: (state) => WabInkDotStyle(
+                  color: Color(0xFF000000 + state * 0x333333),
+                ),
+                dotSize: 4,
+                gap: 1,
+              ),
+            ),
+          ),
+        );
+        final grid = find.byKey(ValueKey<String>('grid-$rows-$cols'));
+        return (renderObjectsUnder(grid), elementsUnder(grid));
+      }
+
+      final (smallRenderObjects, smallElements) = await countsFor(2, 2);
+      final (largeRenderObjects, largeElements) = await countsFor(65, 53);
+
+      expect(largeRenderObjects, smallRenderObjects);
+      expect(largeElements, smallElements);
+      expect(largeRenderObjects, lessThan(10));
+      expect(largeElements, lessThan(10));
+    },
+  );
 }
