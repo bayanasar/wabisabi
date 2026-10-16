@@ -32,6 +32,9 @@
 
 ### Fixed
 
+- `WabSealMark` set its text at the top-left of the face instead of in the
+  middle. Text wider than tall, such as two characters or a Latin word, left
+  the lower part of the seal empty.
 - `WabEditorialBanner` overflowed horizontally when the viewer's text size was
   raised: the widths at which it drops its motto, kit label and subtitle did not
   account for text scale.

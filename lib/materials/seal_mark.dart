@@ -41,6 +41,9 @@ class WabSealMark extends StatelessWidget {
       width: size,
       height: size,
       child: Stack(
+        // The glyphs keep their own proportions, so they are centred rather
+        // than left at the top-left of the face.
+        alignment: Alignment.center,
         children: [
           if (bai)
             Positioned.fill(
