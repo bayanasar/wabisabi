@@ -2,7 +2,7 @@ name: wabisabi
 description: >-
   侘寂 — a Flutter widget kit with an East Asian document grammar: procedural
   paper, wood, cloth and cinnabar surfaces, no image assets, no dependencies.
-version: 0.1.0
+version: 0.2.0
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

@@ -1,9 +1,9 @@
 # PROGRESS — wabisabi
 
 <!-- progress -->
-updated: 2026-09-13
+updated: 2026-10-15
 owner: bayanasar
-stage: 0.1.0 and the reading floor are on main, untagged; one lift for the kit (dark theme as lamplight) in review
+stage: 0.2.0 — the reading floor, one lift (dark theme as lamplight) and centred seal text; 0.1.0 is tagged
 <!-- /progress -->
 
 ## What this is
@@ -75,9 +75,9 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Open
 
-- 0.1.0 is not tagged; consumers pinned to a tag still see 0.0.4.
-- #23 one lift, dark theme as lamplight; #24 containers catalogue cell — in
-  review.
+- 0.2.0 is tagged once this release is on main.
+- #23 one lift, dark theme as lamplight; #24 containers catalogue cell — on
+  main; the issues are still open.
 - #9 bare `CupertinoApp` palette falls back to system colours.
 - #10 `WabBanner` fixed height overflows at raised text size.
 - #21 `WabEditorialBanner` overflows at phone width with 2.5x text.
