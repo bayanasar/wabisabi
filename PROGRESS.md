@@ -83,11 +83,12 @@ matters is enforced by scripts in `tool/`, not by prose.
   own Flutter, JDK and Android SDK; `.github/workflows` stays for the public
   mirror — no forge runner serves `ubuntu-latest`, and the GitHub workflow
   relies on hosted-runner actions and `sudo`.
+- 2026-10-25 `main` requires the forge check and takes fast-forward merges
+  only — #30 was merged and 0.2.0 tagged while every check was still waiting.
 
 ## Open
 
-- 0.2.1 is tagged once this release is on main.
-- `main` is not protected, so a merge does not wait for the forge check (#31).
+- 0.2.1 is on main (`09a1a1f`) but not yet tagged.
 - The formatter is not in CI: `dart format` would change 44 of 63 files under
   `lib/`, `test/` and `tool/`.
 - #23 one lift, dark theme as lamplight; #24 containers catalogue cell — on
