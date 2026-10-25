@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.2
+
+### Changed
+
+- `WabDotGrid` paints its dots in one `CustomPainter` instead of building a
+  widget per dot. A 65×53 grid builds fewer than 10 render objects and
+  elements, where it built 13,911 and 20,802; rebuilding with equal styles
+  does not repaint. The constructor is unchanged and each dot draws exactly
+  what a `WabInkDot` of its style draws, but the grid no longer contains
+  `WabInkDot` widgets for a test to find.
+
 ## 0.2.1
 
 ### Fixed

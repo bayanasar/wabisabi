@@ -3,7 +3,7 @@
 <!-- progress -->
 updated: 2026-10-25
 owner: bayanasar
-stage: 0.2.1 — the forge runs the gate and the example builds an APK again; 0.2.0 is tagged
+stage: 0.2.2 — `WabDotGrid` paints as one surface and draws what `WabInkDot` draws, pixel for pixel
 <!-- /progress -->
 
 ## What this is
@@ -15,18 +15,23 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Sealed
 
-- Forge CI on the 0.2.1 fix — run 25 on `d501f37`, the `linux-docker` runner:
-  success, the only check queued. The same job replayed in the runner image:
-  analyze no issues, 19 package and 45 example tests, token export unchanged,
-  the three contract checks clean, web, Linux and a 67.9 MB release APK built.
-- 0.2.0 failed only at the APK — run 24 on `fc6b194` (the 0.2.0 tree plus the
-  workflow) failed; replayed in the runner image, every step passed until
-  `flutter build apk`: Gradle 8.10.2 is below Flutter 3.47.2's 8.14 minimum.
-- Contract checks on the lift branch tip — `flutter analyze` no issues;
+- Forge CI runs the whole gate, release APK included, on the `linux-docker`
+  runner — `main` at `96f57d4`: run 33 (push) and run 32 (pull request)
+  success.
+- `WabDotGrid` draws what `WabInkDot` draws — `test/dot_grid_test.dart`
+  renders a one-dot grid and a `WabInkDot` of the same style at 3x for five
+  styles: 0 differing pixels. Before the fix, three failed by 105, 105 and 160
+  pixels: an opaque border, a hollow ring and a zero-width border.
+- A consuming app's 65×53 grid renders as it did on 0.2.1 — its release web
+  build against 0.2.1 and against the 0.2.2 branch, in a desktop browser at
+  390, 860, 1000 and 1400 px, and at 390 and 1400 px with a dot pressed:
+  0 differing pixels. Against `96f57d4`, before the fix, its one bordered dot
+  differed by 15 to 38 pixels: a dark halo outside the ring.
+- Contract checks on the 0.2.2 branch — `flutter analyze` no issues;
   `check_layering` 54 files, no cycles; `check_public_api` 211 names, 0
   violations; `check_house_rules` 59 files clean; `export_tokens` leaves
   `web/quarto/` unchanged.
-- Tests on the lift branch tip — `flutter test` 13 green (3 for the lift);
+- Tests on the 0.2.2 branch — `flutter test` 27 green (8 for the dot grid);
   `cd example && flutter test` 45 green (38 catalogue sweeps over 13 widths and
   5 text scales, 7 reading-floor widths).
 - The light theme was pixel-identical before and after the first lamplight pass
@@ -54,7 +59,8 @@ matters is enforced by scripts in `tool/`, not by prose.
   edges. Set it to false in the test and back before it ends, or judge in a
   browser.
 - The example APK on a device — built in CI, never installed or launched.
-- No golden images (#13) — a visual regression in a painter passes every check
+- No golden images (#13) — only `WabDotGrid` is compared pixel for pixel, with
+  `WabInkDot`; a visual regression in any other painter passes every check
   above.
 
 ## Decisions
@@ -85,10 +91,16 @@ matters is enforced by scripts in `tool/`, not by prose.
   relies on hosted-runner actions and `sudo`.
 - 2026-10-25 `main` requires the forge check and takes fast-forward merges
   only — #30 was merged and 0.2.0 tagged while every check was still waiting.
+- 2026-10-25 A painter that replaces widgets is tested against those widgets,
+  pixel for pixel — the dot-grid painter passed review, the render-count test
+  and every check, and still drew a halo that only a screenshot diff in a
+  consuming app found.
 
 ## Open
 
-- 0.2.1 is on main (`09a1a1f`) but not yet tagged.
+- The 0.2.1 commit reads red: run 34, started by the tag push, failed after
+  the runner's host restarted ten minutes in. The same commit passed runs 26,
+  27 and 30. Re-running run 34 needs a forge login.
 - The formatter is not in CI: `dart format` would change 44 of 63 files under
   `lib/`, `test/` and `tool/`.
 - #23 one lift, dark theme as lamplight; #24 containers catalogue cell — on
