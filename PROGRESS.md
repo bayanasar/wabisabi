@@ -1,9 +1,9 @@
 # PROGRESS — wabisabi
 
 <!-- progress -->
-updated: 2026-10-15
+updated: 2026-10-25
 owner: bayanasar
-stage: 0.2.0 — the reading floor, one lift (dark theme as lamplight) and centred seal text; 0.1.0 is tagged
+stage: 0.2.1 — the forge runs the gate and the example builds an APK again; 0.2.0 is tagged
 <!-- /progress -->
 
 ## What this is
@@ -15,6 +15,13 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Sealed
 
+- Forge CI on the 0.2.1 fix — run 25 on `d501f37`, the `linux-docker` runner:
+  success, the only check queued. The same job replayed in the runner image:
+  analyze no issues, 19 package and 45 example tests, token export unchanged,
+  the three contract checks clean, web, Linux and a 67.9 MB release APK built.
+- 0.2.0 failed only at the APK — run 24 on `fc6b194` (the 0.2.0 tree plus the
+  workflow) failed; replayed in the runner image, every step passed until
+  `flutter build apk`: Gradle 8.10.2 is below Flutter 3.47.2's 8.14 minimum.
 - Contract checks on the lift branch tip — `flutter analyze` no issues;
   `check_layering` 54 files, no cycles; `check_public_api` 211 names, 0
   violations; `check_house_rules` 59 files clean; `export_tokens` leaves
@@ -46,7 +53,7 @@ matters is enforced by scripts in `tool/`, not by prose.
   `debugDisableShadows`, drawing every `BoxShadow` unblurred with hard stepped
   edges. Set it to false in the test and back before it ends, or judge in a
   browser.
-- CI on the fix branch — the workflow steps were run locally only.
+- The example APK on a device — built in CI, never installed or launched.
 - No golden images (#13) — a visual regression in a painter passes every check
   above.
 
@@ -72,10 +79,17 @@ matters is enforced by scripts in `tool/`, not by prose.
 - 2026-09-13 Wood: paper's reach, 1.5x strength; jade: 1.6x reach, 0.8x
   strength — dense wood shades darker; jade lets light through. At 0.6x jade's
   wider lift nearly vanished.
+- 2026-10-16 Forge CI is `.forgejo/workflows` on `linux-docker`, installing its
+  own Flutter, JDK and Android SDK; `.github/workflows` stays for the public
+  mirror — no forge runner serves `ubuntu-latest`, and the GitHub workflow
+  relies on hosted-runner actions and `sudo`.
 
 ## Open
 
-- 0.2.0 is tagged once this release is on main.
+- 0.2.1 is tagged once this release is on main.
+- `main` is not protected, so a merge does not wait for the forge check (#31).
+- The formatter is not in CI: `dart format` would change 44 of 63 files under
+  `lib/`, `test/` and `tool/`.
 - #23 one lift, dark theme as lamplight; #24 containers catalogue cell — on
   main; the issues are still open.
 - #9 bare `CupertinoApp` palette falls back to system colours.

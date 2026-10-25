@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+### Fixed
+
+- The example's Android project builds an APK with Flutter 3.47.2 again. Its
+  Gradle 8.10.2 was below the 8.14 minimum Flutter enforces; the project is
+  regenerated from the 3.47.2 template.
+
 ## 0.2.0
 
 ### Changed
