@@ -11,6 +11,9 @@ class WabInkDotStyle {
 
   final Color color;
   final Color? borderColor;
+
+  /// Width of the border, drawn inside the dot's edge. With a [borderColor],
+  /// zero draws a hairline, as a zero-width [BorderSide] does.
   final double borderWidth;
 
   @override
@@ -135,12 +138,20 @@ class _WabDotGridPainter extends CustomPainter {
       for (var col = 0; col < cols; col++) {
         final style = styles[row * cols + col];
         final center = Offset(radius + col * step, y);
-
-        fill.color = style.color;
-        canvas.drawCircle(center, radius, fill);
-
         final borderColor = style.borderColor;
-        if (borderColor != null && style.borderWidth > 0) {
+
+        // As in BoxDecoration, an opaque border (8-bit alpha 255) holds the
+        // fill back to the border's centre line, out of its anti-aliased
+        // outer edge; a translucent one lets the fill show through.
+        final fillInset =
+            borderColor != null && (borderColor.a * 255.0).round() == 255
+                ? style.borderWidth / 2
+                : 0.0;
+        fill.color = style.color;
+        canvas.drawCircle(center, radius - fillInset, fill);
+
+        // A zero width draws a hairline, as a zero-width BorderSide does.
+        if (borderColor != null) {
           stroke
             ..color = borderColor
             ..strokeWidth = style.borderWidth;

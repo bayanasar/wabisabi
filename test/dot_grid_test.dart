@@ -1,8 +1,97 @@
+import 'dart:typed_data';
+
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wabisabi/components/dot_grid.dart';
 
 void main() {
+  group('a grid dot paints the pixels a WabInkDot of its style paints', () {
+    // The painter replaced one WabInkDot per dot, so a style must still draw
+    // the same dot. Under an opaque border BoxDecoration stops the fill at the
+    // border's centre line; a fill drawn to the full radius tints the border's
+    // anti-aliased outer edge. A zero border width draws a hairline.
+    const ink = Color(0xFF1A1A1A);
+    const paper = Color(0xFFFAF6EC);
+    const rust = Color(0xFF9A4337);
+    const styles = <String, WabInkDotStyle>{
+      'fill only': WabInkDotStyle(color: ink),
+      'opaque border': WabInkDotStyle(
+        color: ink,
+        borderColor: rust,
+        borderWidth: 2,
+      ),
+      'hollow ring with a fractional border': WabInkDotStyle(
+        color: paper,
+        borderColor: ink,
+        borderWidth: 1.5,
+      ),
+      'translucent border': WabInkDotStyle(
+        color: ink,
+        borderColor: Color(0x809A4337),
+        borderWidth: 2,
+      ),
+      'zero-width border': WabInkDotStyle(color: paper, borderColor: ink),
+    };
+
+    Future<Uint8List> pixelsOf(WidgetTester tester, Widget dot) async {
+      final key = GlobalKey();
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Center(
+            child: RepaintBoundary(key: key, child: dot),
+          ),
+        ),
+      );
+      final boundary = tester.renderObject<RenderRepaintBoundary>(
+        find.byKey(key),
+      );
+      final pixels = await tester.runAsync(() async {
+        final image = await boundary.toImage(pixelRatio: 3);
+        final bytes = await image.toByteData();
+        image.dispose();
+        return bytes!.buffer.asUint8List();
+      });
+      return pixels!;
+    }
+
+    int differingPixels(Uint8List a, Uint8List b) {
+      var count = 0;
+      for (var i = 0; i < a.length; i += 4) {
+        if (a[i] != b[i] ||
+            a[i + 1] != b[i + 1] ||
+            a[i + 2] != b[i + 2] ||
+            a[i + 3] != b[i + 3]) {
+          count++;
+        }
+      }
+      return count;
+    }
+
+    for (final MapEntry(key: name, value: style) in styles.entries) {
+      testWidgets(name, (tester) async {
+        final dot = await pixelsOf(
+          tester,
+          WabInkDot(style: style, size: 11),
+        );
+        final grid = await pixelsOf(
+          tester,
+          WabDotGrid<WabInkDotStyle>(
+            rows: 1,
+            cols: 1,
+            states: [style],
+            styleOf: (style) => style,
+            dotSize: 11,
+          ),
+        );
+
+        expect(grid.length, dot.length);
+        expect(differingPixels(grid, dot), 0);
+      });
+    }
+  });
+
   testWidgets(
     'large dot grid paints as one surface instead of per-dot widgets',
     (tester) async {
