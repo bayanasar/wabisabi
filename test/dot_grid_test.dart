@@ -90,6 +90,63 @@ void main() {
         expect(differingPixels(grid, dot), 0);
       });
     }
+
+    testWidgets('across a 3x4 grid at a fractional pitch', (tester) async {
+      // The grid before the painter laid its dots out as a Row per grid row
+      // inside a Column, each gap a Padding. Rebuilt here, it pins the
+      // painter's `radius + col * step` against the old layout's summed
+      // paddings, at the fractional sizes consumers fit a grid to.
+      const rows = 3;
+      const cols = 4;
+      const dotSize = 7.3;
+      const gap = 0.9;
+      final cells = [
+        for (var i = 0; i < rows * cols; i++)
+          styles.values.elementAt(i % styles.length),
+      ];
+
+      final dots = await pixelsOf(
+        tester,
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var r = 0; r < rows; r++)
+              Padding(
+                padding: EdgeInsets.only(bottom: r == rows - 1 ? 0 : gap),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (var c = 0; c < cols; c++)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          right: c == cols - 1 ? 0 : gap,
+                        ),
+                        child: WabInkDot(
+                          style: cells[r * cols + c],
+                          size: dotSize,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      );
+      final grid = await pixelsOf(
+        tester,
+        WabDotGrid<WabInkDotStyle>(
+          rows: rows,
+          cols: cols,
+          states: cells,
+          styleOf: (style) => style,
+          dotSize: dotSize,
+          gap: gap,
+        ),
+      );
+
+      expect(grid.length, dots.length);
+      expect(differingPixels(grid, dots), 0);
+    });
   });
 
   testWidgets(
