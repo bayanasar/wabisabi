@@ -34,11 +34,15 @@ void main() {
       'zero-width border': WabInkDotStyle(color: paper, borderColor: ink),
     };
 
-    Future<Uint8List> pixelsOf(WidgetTester tester, Widget dot) async {
+    Future<Uint8List> pixelsOf(
+      WidgetTester tester,
+      Widget dot, {
+      TextDirection textDirection = TextDirection.ltr,
+    }) async {
       final key = GlobalKey();
       await tester.pumpWidget(
         Directionality(
-          textDirection: TextDirection.ltr,
+          textDirection: textDirection,
           child: Center(
             child: RepaintBoundary(key: key, child: dot),
           ),
@@ -146,6 +150,38 @@ void main() {
 
       expect(grid.length, dots.length);
       expect(differingPixels(grid, dots), 0);
+    });
+
+    testWidgets('the same under right-to-left text', (tester) async {
+      // The grid is row-major data: column 0 stays at the left. The layout the
+      // painter replaced mirrored here, and its non-directional right padding
+      // then left a gap at the grid's right edge and none between the two
+      // leftmost dots. The styles differ along each row, so a mirrored grid
+      // cannot pass.
+      const rows = 3;
+      const cols = 4;
+      final cells = [
+        for (var i = 0; i < rows * cols; i++)
+          styles.values.elementAt(i % styles.length),
+      ];
+      final grid = WabDotGrid<WabInkDotStyle>(
+        rows: rows,
+        cols: cols,
+        states: cells,
+        styleOf: (style) => style,
+        dotSize: 7.3,
+        gap: 0.9,
+      );
+
+      final ltr = await pixelsOf(tester, grid);
+      final rtl = await pixelsOf(
+        tester,
+        grid,
+        textDirection: TextDirection.rtl,
+      );
+
+      expect(rtl.length, ltr.length);
+      expect(differingPixels(rtl, ltr), 0);
     });
   });
 

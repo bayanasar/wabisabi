@@ -57,6 +57,9 @@ class WabInkDot extends StatelessWidget {
 /// [styleOf] mapping from a state to an [WabInkDotStyle]. It carries no domain
 /// semantics (no "week", "life", etc.) — consumers own that meaning.
 ///
+/// Column 0 is always at the left: the grid does not mirror under right-to-left
+/// text.
+///
 /// The grid keeps its intrinsic dot geometry under a tighter parent. Consumers
 /// that need it to fit a smaller viewport should scale or scroll it explicitly,
 /// matching the pre-painter overflow contract rather than silently shrinking

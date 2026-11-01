@@ -1,7 +1,7 @@
 # PROGRESS — wabisabi
 
 <!-- progress -->
-updated: 2026-10-25
+updated: 2026-11-01
 owner: bayanasar
 stage: 0.2.2 — `WabDotGrid` paints as one surface and draws what `WabInkDot` draws, pixel for pixel
 <!-- /progress -->
@@ -26,6 +26,9 @@ matters is enforced by scripts in `tool/`, not by prose.
   rebuilds the replaced Row-in-Column of `WabInkDot`s and compares it with a
   3×4 grid at dot 7.3, gap 0.9: 0 differing pixels. With every centre moved
   0.05 px, 1,402 pixels differ.
+- The grid does not mirror under right-to-left text — the same test file renders
+  that 3×4 grid under `rtl` and under `ltr` at 3x: 0 differing pixels. With the
+  painter flipped under RTL, the test fails.
 - A consuming app's 65×53 grid renders as it did on 0.2.1 — its release web
   build against 0.2.1 and against the 0.2.2 branch, in a desktop browser at
   390, 860, 1000 and 1400 px, and at 390 and 1400 px with a dot pressed:
@@ -35,7 +38,7 @@ matters is enforced by scripts in `tool/`, not by prose.
   `check_layering` 54 files, no cycles; `check_public_api` 211 names, 0
   violations; `check_house_rules` 59 files clean; `export_tokens` leaves
   `web/quarto/` unchanged.
-- Tests after 0.2.2 — `flutter test` 28 green (9 for the dot grid);
+- Tests after 0.2.2 — `flutter test` 29 green (10 for the dot grid);
   `cd example && flutter test` 45 green (38 catalogue sweeps over 13 widths and
   5 text scales, 7 reading-floor widths).
 - The light theme was pixel-identical before and after the first lamplight pass
@@ -99,6 +102,9 @@ matters is enforced by scripts in `tool/`, not by prose.
   pixel for pixel — the dot-grid painter passed review, the render-count test
   and every check, and still drew a halo that only a screenshot diff in a
   consuming app found.
+- 2026-11-01 `WabDotGrid` does not mirror under RTL — a grid is row-major data,
+  and a consumer's axes and hit test assume column 0 at the left. 0.2.2 changed
+  this without recording it.
 
 ## Open
 
