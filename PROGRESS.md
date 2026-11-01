@@ -16,7 +16,7 @@ matters is enforced by scripts in `tool/`, not by prose.
 ## Sealed
 
 - Forge CI runs the whole gate, release APK included, on the `linux-docker`
-  runner — `main` at `96f57d4`: run 33 (push) and run 32 (pull request)
+  runner — `main` at `036b161`: run 47 (push) and run 45 (pull request)
   success.
 - `WabDotGrid` draws what `WabInkDot` draws — `test/dot_grid_test.dart`
   renders a one-dot grid and a `WabInkDot` of the same style at 3x for five
@@ -112,9 +112,6 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Open
 
-- The 0.2.1 commit reads red: run 34, started by the tag push, failed after
-  the runner's host restarted ten minutes in. The same commit passed runs 26,
-  27 and 30. Re-running run 34 needs a forge login.
 - #23 one lift, dark theme as lamplight; #24 containers catalogue cell — on
   main; the issues are still open.
 - #9 bare `CupertinoApp` palette falls back to system colours.
