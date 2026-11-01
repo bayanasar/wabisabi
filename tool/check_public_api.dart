@@ -114,7 +114,8 @@ List<Decl> publicDecls(String file) {
     if (isDeprecated(source, m.start)) continue;
     final name = m.group(2)!;
     // Skip control flow and the type/member declarations already collected.
-    if (const {'if', 'for', 'while', 'switch', 'catch', 'return'}.contains(name)) {
+    if (const {'if', 'for', 'while', 'switch', 'catch', 'return'}
+        .contains(name)) {
       continue;
     }
     if (decls.any((d) => d.name == name)) continue;
@@ -173,13 +174,15 @@ void main() {
   );
 
   if (fresh.isNotEmpty) {
-    stderr.writeln('\n${fresh.length} NEW violation(s) — fix them, or add to $_baselinePath:\n');
+    stderr.writeln(
+        '\n${fresh.length} NEW violation(s) — fix them, or add to $_baselinePath:\n');
     for (final v in fresh) {
       stderr.writeln('  $v');
     }
   }
   if (stale.isNotEmpty) {
-    stderr.writeln('\n${stale.length} baseline entr(y/ies) no longer apply — delete these lines from $_baselinePath:\n');
+    stderr.writeln(
+        '\n${stale.length} baseline entr(y/ies) no longer apply — delete these lines from $_baselinePath:\n');
     for (final v in stale) {
       stderr.writeln('  $v');
     }

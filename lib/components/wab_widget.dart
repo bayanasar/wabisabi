@@ -17,8 +17,9 @@ abstract class WabWidget extends StatelessWidget {
   const WabWidget({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      wabIsIos() ? createCupertinoWidget(context) : createMaterialWidget(context);
+  Widget build(BuildContext context) => wabIsIos()
+      ? createCupertinoWidget(context)
+      : createMaterialWidget(context);
 
   Widget createCupertinoWidget(BuildContext context);
   Widget createMaterialWidget(BuildContext context);

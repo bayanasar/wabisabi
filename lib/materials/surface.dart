@@ -48,10 +48,12 @@ class WabSurface extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark ?? WabTheme.of(context).isDark;
-    final paper = dark ? WAB_TEXTURE_PAPER_BASE_DARK : WAB_TEXTURE_PAPER_BASE_LIGHT;
+    final paper =
+        dark ? WAB_TEXTURE_PAPER_BASE_DARK : WAB_TEXTURE_PAPER_BASE_LIGHT;
     final fibrePaper = dark
         ? paper
-        : Color.alphaBlend(WAB_TEXTURE_PAPER_AGE_LIGHT.withValues(alpha: .055), paper);
+        : Color.alphaBlend(
+            WAB_TEXTURE_PAPER_AGE_LIGHT.withValues(alpha: .055), paper);
     final content = Padding(padding: padding, child: child);
 
     Widget surface = switch (kind) {
@@ -80,8 +82,10 @@ class WabSurface extends StatelessWidget {
             child: content,
           ),
         ),
-      WabSurfaceKind.woodGrain => CustomPaint(painter: WabWoodGrain(isDark: dark), child: content),
-      WabSurfaceKind.clothWeave => WabClothTexture(isDark: dark, child: content),
+      WabSurfaceKind.woodGrain =>
+        CustomPaint(painter: WabWoodGrain(isDark: dark), child: content),
+      WabSurfaceKind.clothWeave =>
+        WabClothTexture(isDark: dark, child: content),
       WabSurfaceKind.jadeSheen => WabJadeTexture(isDark: dark, child: content),
       WabSurfaceKind.rubbing => WabRubbingTexture(child: content),
       WabSurfaceKind.inkWash => ColoredBox(
@@ -90,13 +94,14 @@ class WabSurface extends StatelessWidget {
             isDark: dark,
             strength: .28,
             child: CustomPaint(
-            painter: WabInkWash(colors: WabTheme.of(context), isDark: dark),
-            child: content,
-          ),
+              painter: WabInkWash(colors: WabTheme.of(context), isDark: dark),
+              child: content,
+            ),
           ),
         ),
       WabSurfaceKind.patina => WabPatinaTexture(isDark: dark, child: content),
-      WabSurfaceKind.cinnabar => WabCinnabarTexture(isDark: dark, child: content),
+      WabSurfaceKind.cinnabar =>
+        WabCinnabarTexture(isDark: dark, child: content),
       WabSurfaceKind.deckle => WabDeckleSurface(
           fill: paper,
           texture: WabPaperTexture(isDark: dark, strength: 1.0),

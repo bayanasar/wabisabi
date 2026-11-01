@@ -59,7 +59,8 @@ class WabSealText extends StatelessWidget {
                 ..color = ink,
             ),
           ),
-          Text(text, textAlign: TextAlign.center, style: base.copyWith(color: ink)),
+          Text(text,
+              textAlign: TextAlign.center, style: base.copyWith(color: ink)),
         ],
       ),
     );

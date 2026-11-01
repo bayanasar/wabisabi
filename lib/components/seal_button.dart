@@ -22,16 +22,16 @@ class WabSealButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WabButton(
-        kind: WabMaterialKind.seal,
-        onPressed: onPressed,
-        expand: expand,
-        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 4),
-        child: WabSealText(
-          label,
-          fontSize: fontSize,
-          color: WabTheme.of(context).paperWhite,
-          strokeWidth: .82,
-        ),
+      kind: WabMaterialKind.seal,
+      onPressed: onPressed,
+      expand: expand,
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 4),
+      child: WabSealText(
+        label,
+        fontSize: fontSize,
+        color: WabTheme.of(context).paperWhite,
+        strokeWidth: .82,
+      ),
     );
   }
 }

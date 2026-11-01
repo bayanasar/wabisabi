@@ -47,9 +47,8 @@ class _FoldFramePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
-    final crease = dark
-        ? WAB_TEXTURE_PAPER_CREASE_DARK
-        : WAB_TEXTURE_PAPER_CREASE_LIGHT;
+    final crease =
+        dark ? WAB_TEXTURE_PAPER_CREASE_DARK : WAB_TEXTURE_PAPER_CREASE_LIGHT;
     final highlight = dark
         ? WAB_TEXTURE_PAPER_HIGHLIGHT_DARK
         : WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT;

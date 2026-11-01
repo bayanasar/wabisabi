@@ -15,7 +15,8 @@ import 'dart:io';
 /// What may never appear in a colour position, and what to use instead.
 const _forbiddenColors = <String, String>{
   'Colors.black': 'WAB_TEXTURE_INK — a shadow is ink, not absent light',
-  'Colors.white': 'a paper tone: WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT, or paperWhite',
+  'Colors.white':
+      'a paper tone: WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT, or paperWhite',
   'Colors.red': "the theme's sealColor",
   'Colors.redAccent': "the theme's sealColor",
   '0xFF000000': 'WAB_TEXTURE_INK',

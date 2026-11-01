@@ -14,7 +14,19 @@ import 'package:example/golden1_showcase.dart';
 /// Phones, tablets, the compact/wide breakpoint either side, and laptops up to
 /// a large desktop.
 const _widths = <double>[
-  320, 360, 390, 420, 600, 820, 899, 900, 1000, 1200, 1400, 1600, 1920,
+  320,
+  360,
+  390,
+  420,
+  600,
+  820,
+  899,
+  900,
+  1000,
+  1200,
+  1400,
+  1600,
+  1920,
 ];
 
 /// Text-size settings a viewer can actually pick.

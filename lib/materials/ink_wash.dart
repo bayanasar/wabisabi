@@ -40,19 +40,22 @@ class WabInkWash extends CustomPainter {
     for (var i = 0; i < 9; i++) {
       final rx = size.width * (.10 + rnd.nextDouble() * .20);
       final ry = size.height * (.13 + rnd.nextDouble() * .25);
-      final center = Offset(rnd.nextDouble() * size.width, rnd.nextDouble() * size.height);
+      final center =
+          Offset(rnd.nextDouble() * size.width, rnd.nextDouble() * size.height);
       final op = (dark ? .050 : .065) + rnd.nextDouble() * (dark ? .05 : .085);
       canvas.drawOval(
         Rect.fromCenter(center: center, width: rx * 2, height: ry * 2),
         Paint()
           ..color = ink.withValues(alpha: op)
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, math.min(rx, ry) * .46),
+          ..maskFilter =
+              MaskFilter.blur(BlurStyle.normal, math.min(rx, ry) * .46),
       );
     }
 
     // A few lighter bloom centers create water-loaded edges without linework.
     for (var i = 0; i < 3; i++) {
-      final r = math.min(size.width, size.height) * (.08 + rnd.nextDouble() * .10);
+      final r =
+          math.min(size.width, size.height) * (.08 + rnd.nextDouble() * .10);
       canvas.drawCircle(
         Offset(rnd.nextDouble() * size.width, rnd.nextDouble() * size.height),
         r,

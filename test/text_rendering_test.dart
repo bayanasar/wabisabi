@@ -7,7 +7,9 @@ void main() {
     for (final isDark in [false, true]) {
       final themeName = isDark ? 'dark' : 'light';
 
-      testWidgets('WabScaffold (Material builder) in $themeName theme establishes clean text styles', (tester) async {
+      testWidgets(
+          'WabScaffold (Material builder) in $themeName theme establishes clean text styles',
+          (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             theme: WabTheme.materialTheme(lightTheme: !isDark),
@@ -38,7 +40,9 @@ void main() {
         expect(style.decorationStyle, isNot(TextDecorationStyle.double));
       });
 
-      testWidgets('WabScaffold (Cupertino builder / macOS target) in $themeName theme establishes clean text styles', (tester) async {
+      testWidgets(
+          'WabScaffold (Cupertino builder / macOS target) in $themeName theme establishes clean text styles',
+          (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             theme: WabTheme.materialTheme(lightTheme: !isDark),
@@ -69,7 +73,9 @@ void main() {
         expect(style.decorationStyle, isNot(TextDecorationStyle.double));
       });
 
-      testWidgets('WabButton in $themeName theme establishes complete text style', (tester) async {
+      testWidgets(
+          'WabButton in $themeName theme establishes complete text style',
+          (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             theme: WabTheme.materialTheme(lightTheme: !isDark),

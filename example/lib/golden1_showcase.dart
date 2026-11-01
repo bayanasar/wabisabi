@@ -17,7 +17,8 @@ class Golden1Showcase extends StatefulWidget {
 }
 
 class _Golden1ShowcaseState extends State<Golden1Showcase> {
-  final _sectionKeys = List<GlobalKey>.generate(_nav.length, (_) => GlobalKey());
+  final _sectionKeys =
+      List<GlobalKey>.generate(_nav.length, (_) => GlobalKey());
   int _selected = 0;
   bool _check = true;
   int _radio = 0;
@@ -107,7 +108,6 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
   static const _boardTop = 10.0;
   static const _boardBottom = 30.0;
 
-
   void _jumpTo(int index) {
     setState(() => _selected = index);
     final context = _sectionKeys[index].currentContext;
@@ -136,43 +136,43 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
                 // room it costs.
                 final compact = constraints.maxWidth < _compactWidth;
                 return WabPaperSheet(
-              isDark: wab.isDark,
-              horizontalFolds: const [],
-              verticalFolds: const [],
-              child: WabEditorialBanner(
-                brand: '侘 寂',
-                kitLabel: 'WABISABI\nUI KIT',
-                title: '現代應用的東方美學界面系統',
-                subtitle: 'A TIMELESS UI SYSTEM FOR MODERN APPS',
-                motto: '取法自然 · 材質為語 · 克制為美 · 留白生境',
-                seal: WabSealMark(text: '侘寂', size: 25, seed: 17),
-                trailing: [
-                  if (!compact) ...[
-                    Text(
-                      'v0.2 · BUILD $_buildHash\nLESS, BUT DEEPER.',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: wab.mutedColor,
-                        fontFamily: kWabMonoFamily,
-                        fontSize: WabType.gloss,
-                        letterSpacing: 1.45,
-                        height: 1.35,
+                  isDark: wab.isDark,
+                  horizontalFolds: const [],
+                  verticalFolds: const [],
+                  child: WabEditorialBanner(
+                    brand: '侘 寂',
+                    kitLabel: 'WABISABI\nUI KIT',
+                    title: '現代應用的東方美學界面系統',
+                    subtitle: 'A TIMELESS UI SYSTEM FOR MODERN APPS',
+                    motto: '取法自然 · 材質為語 · 克制為美 · 留白生境',
+                    seal: WabSealMark(text: '侘寂', size: 25, seed: 17),
+                    trailing: [
+                      if (!compact) ...[
+                        Text(
+                          'v0.2 · BUILD $_buildHash\nLESS, BUT DEEPER.',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: wab.mutedColor,
+                            fontFamily: kWabMonoFamily,
+                            fontSize: WabType.gloss,
+                            letterSpacing: 1.45,
+                            height: 1.35,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                      ],
+                      WabIconButton(
+                        icon: Icon(
+                          wab.isDark
+                              ? Icons.light_mode_outlined
+                              : Icons.dark_mode_outlined,
+                          size: 15,
+                        ),
+                        kind: WabMaterialKind.zhuwen,
+                        callback: widget.onToggleTheme,
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                  ],
-                  WabIconButton(
-                    icon: Icon(
-                      wab.isDark
-                          ? Icons.light_mode_outlined
-                          : Icons.dark_mode_outlined,
-                      size: 15,
-                    ),
-                    kind: WabMaterialKind.zhuwen,
-                    callback: widget.onToggleTheme,
+                    ],
                   ),
-                ],
-              ),
                 );
               },
             ),
@@ -305,7 +305,8 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
                 (inset + i * cellWidth) / constraints.maxWidth,
             ],
             child: Padding(
-              padding: const EdgeInsets.only(top: _boardTop, bottom: _boardBottom),
+              padding:
+                  const EdgeInsets.only(top: _boardTop, bottom: _boardBottom),
               child: Column(
                 children: [
                   for (var row = 0; row < rows; row++)
@@ -340,8 +341,8 @@ class _Golden1ShowcaseState extends State<Golden1Showcase> {
         final wab = WabTheme.of(context);
         const sheetPadding = 14.0;
         final available = constraints.maxWidth - sheetPadding * 2;
-        final width =
-            (available / _textScale(context)).clamp(_cellMinWidth, _cellDesignWidth);
+        final width = (available / _textScale(context))
+            .clamp(_cellMinWidth, _cellDesignWidth);
         final scale = math.min(_textScale(context), available / width);
 
         return SingleChildScrollView(

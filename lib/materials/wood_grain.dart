@@ -5,7 +5,8 @@ import '../tokens/texture.dart';
 
 /// 木紋 — warm timber with layered grain, pores, knot and a restrained top sheen.
 class WabWoodGrain extends CustomPainter {
-  const WabWoodGrain({this.isDark = false, this.seed = 3.0, this.showKnot = true});
+  const WabWoodGrain(
+      {this.isDark = false, this.seed = 3.0, this.showKnot = true});
 
   final bool isDark;
   final double seed;
@@ -13,9 +14,12 @@ class WabWoodGrain extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final base = isDark ? WAB_TEXTURE_WOOD_BASE_DARK : WAB_TEXTURE_WOOD_BASE_LIGHT;
-    final deep = isDark ? WAB_TEXTURE_WOOD_DEEP_DARK : WAB_TEXTURE_WOOD_DEEP_LIGHT;
-    final light = isDark ? WAB_TEXTURE_WOOD_LIGHT_DARK : WAB_TEXTURE_WOOD_LIGHT_LIGHT;
+    final base =
+        isDark ? WAB_TEXTURE_WOOD_BASE_DARK : WAB_TEXTURE_WOOD_BASE_LIGHT;
+    final deep =
+        isDark ? WAB_TEXTURE_WOOD_DEEP_DARK : WAB_TEXTURE_WOOD_DEEP_LIGHT;
+    final light =
+        isDark ? WAB_TEXTURE_WOOD_LIGHT_DARK : WAB_TEXTURE_WOOD_LIGHT_LIGHT;
     canvas.drawRect(Offset.zero & size, Paint()..color = base);
 
     final lines = (size.height / 3.4).ceil();

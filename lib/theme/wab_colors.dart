@@ -93,8 +93,8 @@ class WabColors extends ThemeExtension<WabColors> {
     // the WabiSabi palette from the ambient Cupertino theme instead, preserving
     // the two colours WabTheme.cupertinoTheme explicitly exposes for override.
     final cupertino = CupertinoTheme.of(context);
-    final brightness = cupertino.brightness ??
-        MediaQuery.platformBrightnessOf(context);
+    final brightness =
+        cupertino.brightness ?? MediaQuery.platformBrightnessOf(context);
     return brightness == Brightness.dark
         ? WabColors.dark(
             primaryColor: cupertino.primaryColor,

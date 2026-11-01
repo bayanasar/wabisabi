@@ -85,7 +85,8 @@ class WabTextFormField extends WabWidget {
           hintText: hint ?? hintText,
           kind: WabRuleKind.thin,
         ).copyWith(
-          contentPadding: EdgeInsets.symmetric(horizontal: padding, vertical: 12),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: padding, vertical: 12),
         ),
       );
 }
@@ -155,20 +156,21 @@ class _WabNumberFormFieldState extends State<WabNumberFormField> {
   Widget _buildMaterial(BuildContext context) {
     final wab = WabTheme.of(context);
     return TextField(
-        controller: _controller,
-        onSubmitted: widget.callback,
-        style: TextStyle(color: wab.textColor),
-        decoration: wabInputDecoration(
-          context,
-          hintText: widget.labelText,
-          kind: WabRuleKind.thin,
-        ).copyWith(
-          labelText: widget.labelText,
-          labelStyle: TextStyle(color: wab.textColor.withValues(alpha: 0.7)),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        ),
-        keyboardType: TextInputType.number,
-        inputFormatters: _formatters,
+      controller: _controller,
+      onSubmitted: widget.callback,
+      style: TextStyle(color: wab.textColor),
+      decoration: wabInputDecoration(
+        context,
+        hintText: widget.labelText,
+        kind: WabRuleKind.thin,
+      ).copyWith(
+        labelText: widget.labelText,
+        labelStyle: TextStyle(color: wab.textColor.withValues(alpha: 0.7)),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      keyboardType: TextInputType.number,
+      inputFormatters: _formatters,
     );
   }
 }
@@ -191,15 +193,15 @@ class WabSearchField extends WabWidget {
   CupertinoSearchTextField createCupertinoWidget(BuildContext context) {
     final wab = WabTheme.of(context);
     return CupertinoSearchTextField(
-        controller: controller,
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
-        placeholder: hintText,
-        backgroundColor: wab.scratchColor.withValues(alpha: .58),
-        style: TextStyle(color: wab.textColor),
-        placeholderStyle: TextStyle(color: wab.textColor.withValues(alpha: 0.5)),
-        borderRadius: BorderRadius.zero,
-        padding: const EdgeInsets.symmetric(vertical: 12),
+      controller: controller,
+      onChanged: onChanged,
+      onSubmitted: onSubmitted,
+      placeholder: hintText,
+      backgroundColor: wab.scratchColor.withValues(alpha: .58),
+      style: TextStyle(color: wab.textColor),
+      placeholderStyle: TextStyle(color: wab.textColor.withValues(alpha: 0.5)),
+      borderRadius: BorderRadius.zero,
+      padding: const EdgeInsets.symmetric(vertical: 12),
     );
   }
 
@@ -207,19 +209,20 @@ class WabSearchField extends WabWidget {
   Widget createMaterialWidget(BuildContext context) {
     final wab = WabTheme.of(context);
     return TextField(
-        controller: controller,
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
-        style: TextStyle(color: wab.textColor),
-        cursorColor: wab.textColor,
-        decoration: wabInputDecoration(
-          context,
-          hintText: hintText,
-          prefixIcon: Icon(Icons.search, color: wab.textColor),
-          kind: WabRuleKind.thin,
-        ).copyWith(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        ),
+      controller: controller,
+      onChanged: onChanged,
+      onSubmitted: onSubmitted,
+      style: TextStyle(color: wab.textColor),
+      cursorColor: wab.textColor,
+      decoration: wabInputDecoration(
+        context,
+        hintText: hintText,
+        prefixIcon: Icon(Icons.search, color: wab.textColor),
+        kind: WabRuleKind.thin,
+      ).copyWith(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
     );
   }
 }

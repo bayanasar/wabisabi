@@ -164,7 +164,8 @@ void main() {
   }
 
   if (problems.isEmpty) {
-    stdout.writeln('layering ok — ${files.length} files, no upward imports, no cycles');
+    stdout.writeln(
+        'layering ok — ${files.length} files, no upward imports, no cycles');
     return;
   }
 

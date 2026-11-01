@@ -44,8 +44,8 @@ class WabRuleFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark ?? WabTheme.of(context).isDark;
-    final ink = (ruleColor ?? WabTheme.of(context).textColor).withValues(alpha: 
-      dark ? WAB_RULE_OPACITY_DARK : WAB_RULE_OPACITY_LIGHT,
+    final ink = (ruleColor ?? WabTheme.of(context).textColor).withValues(
+      alpha: dark ? WAB_RULE_OPACITY_DARK : WAB_RULE_OPACITY_LIGHT,
     );
     return Stack(
       children: [

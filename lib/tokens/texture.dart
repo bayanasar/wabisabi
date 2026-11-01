@@ -10,9 +10,11 @@ const Color WAB_TEXTURE_PAPER_PULP_DARK = Color(kTexturePaperPulpDark);
 const Color WAB_TEXTURE_PAPER_AGE_LIGHT = Color(kTexturePaperAgeLight);
 const Color WAB_TEXTURE_PAPER_AGE_DARK = Color(kTexturePaperAgeDark);
 const Color WAB_TEXTURE_PAPER_CREASE_LIGHT = Color(kTexturePaperCreaseLight);
-const Color WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT = Color(kTexturePaperHighlightLight);
+const Color WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT =
+    Color(kTexturePaperHighlightLight);
 const Color WAB_TEXTURE_PAPER_CREASE_DARK = Color(kTexturePaperCreaseDark);
-const Color WAB_TEXTURE_PAPER_HIGHLIGHT_DARK = Color(kTexturePaperHighlightDark);
+const Color WAB_TEXTURE_PAPER_HIGHLIGHT_DARK =
+    Color(kTexturePaperHighlightDark);
 
 const Color WAB_TEXTURE_WOOD_BASE_LIGHT = Color(kTextureWoodBaseLight);
 const Color WAB_TEXTURE_WOOD_DEEP_LIGHT = Color(kTextureWoodDeepLight);
@@ -60,7 +62,8 @@ const Color WAB_TEXTURE_PATINA_LIGHT_DARK = Color(kTexturePatinaLightDark);
 
 const Color WAB_TEXTURE_CINNABAR_BASE_LIGHT = Color(kTextureCinnabarBaseLight);
 const Color WAB_TEXTURE_CINNABAR_DEEP_LIGHT = Color(kTextureCinnabarDeepLight);
-const Color WAB_TEXTURE_CINNABAR_LIGHT_LIGHT = Color(kTextureCinnabarLightLight);
+const Color WAB_TEXTURE_CINNABAR_LIGHT_LIGHT =
+    Color(kTextureCinnabarLightLight);
 const Color WAB_TEXTURE_CINNABAR_BASE_DARK = Color(kTextureCinnabarBaseDark);
 const Color WAB_TEXTURE_CINNABAR_DEEP_DARK = Color(kTextureCinnabarDeepDark);
 const Color WAB_TEXTURE_CINNABAR_LIGHT_DARK = Color(kTextureCinnabarLightDark);

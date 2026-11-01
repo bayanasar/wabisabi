@@ -94,20 +94,20 @@ class WabCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final wab = WabTheme.of(context);
     return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Checkbox(
-            value: value,
-            onChanged: onChanged,
-            activeColor: wab.textColor,
-            checkColor: wab.paperWhite,
-            visualDensity: VisualDensity.compact,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(.8)),
-            side: BorderSide(color: wab.textColor, width: 1.8),
-          ),
-          if (label != null)
-            Text(label!, style: TextStyle(color: wab.textColor)),
-        ],
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Checkbox(
+          value: value,
+          onChanged: onChanged,
+          activeColor: wab.textColor,
+          checkColor: wab.paperWhite,
+          visualDensity: VisualDensity.compact,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(.8)),
+          side: BorderSide(color: wab.textColor, width: 1.8),
+        ),
+        if (label != null) Text(label!, style: TextStyle(color: wab.textColor)),
+      ],
     );
   }
 }
@@ -130,25 +130,24 @@ class WabRadio<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final wab = WabTheme.of(context);
     return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Each control is its own group of one, which is what the old
-          // per-radio groupValue/onChanged pair meant. Selection is still
-          // value == groupValue, so the public API is unchanged.
-          RadioGroup<T>(
-            groupValue: groupValue,
-            onChanged: onChanged ?? (_) {},
-            child: Radio<T>(
-              value: value,
-              enabled: onChanged != null,
-              activeColor: wab.textColor,
-              visualDensity: VisualDensity.compact,
-              side: BorderSide(color: wab.textColor, width: 1.8),
-            ),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Each control is its own group of one, which is what the old
+        // per-radio groupValue/onChanged pair meant. Selection is still
+        // value == groupValue, so the public API is unchanged.
+        RadioGroup<T>(
+          groupValue: groupValue,
+          onChanged: onChanged ?? (_) {},
+          child: Radio<T>(
+            value: value,
+            enabled: onChanged != null,
+            activeColor: wab.textColor,
+            visualDensity: VisualDensity.compact,
+            side: BorderSide(color: wab.textColor, width: 1.8),
           ),
-          if (label != null)
-            Text(label!, style: TextStyle(color: wab.textColor)),
-        ],
+        ),
+        if (label != null) Text(label!, style: TextStyle(color: wab.textColor)),
+      ],
     );
   }
 }
@@ -175,30 +174,30 @@ class WabSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final wab = WabTheme.of(context);
     return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onChanged == null ? null : () => onChanged!(!value),
-            child: SizedBox(
-              width: 58,
-              height: 25,
-              child: CustomPaint(
-                painter: _FishTailTrackPainter(
-                  value: value ? 1.0 : 0.0,
-                  enabled: onChanged != null,
-                  binary: true,
-                  ink: wab.textColor,
-                  line: wab.lineColor,
-                ),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onChanged == null ? null : () => onChanged!(!value),
+          child: SizedBox(
+            width: 58,
+            height: 25,
+            child: CustomPaint(
+              painter: _FishTailTrackPainter(
+                value: value ? 1.0 : 0.0,
+                enabled: onChanged != null,
+                binary: true,
+                ink: wab.textColor,
+                line: wab.lineColor,
               ),
             ),
           ),
-          if (label != null) ...[
-            const SizedBox(width: 5),
-            Text(label!, style: TextStyle(color: wab.textColor)),
-          ],
+        ),
+        if (label != null) ...[
+          const SizedBox(width: 5),
+          Text(label!, style: TextStyle(color: wab.textColor)),
         ],
+      ],
     );
   }
 }
@@ -238,10 +237,12 @@ class WabSlider extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTapDown: onChanged == null
               ? null
-              : (d) => onChanged!(_fromDx(d.localPosition.dx, constraints.maxWidth)),
+              : (d) =>
+                  onChanged!(_fromDx(d.localPosition.dx, constraints.maxWidth)),
           onHorizontalDragUpdate: onChanged == null
               ? null
-              : (d) => onChanged!(_fromDx(d.localPosition.dx, constraints.maxWidth)),
+              : (d) =>
+                  onChanged!(_fromDx(d.localPosition.dx, constraints.maxWidth)),
           child: CustomPaint(
             painter: _FishTailTrackPainter(
               value: t,
@@ -350,17 +351,17 @@ class WabDropdown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final wab = WabTheme.of(context);
     return DropdownButtonFormField<T>(
-        initialValue: value,
-        items: items.entries
-            .map((e) => DropdownMenuItem<T>(value: e.key, child: Text(e.value)))
-            .toList(),
-        onChanged: onChanged,
-        dropdownColor: wab.surfaceColor,
-        style: TextStyle(
-          color: wab.textColor,
-          fontFamilyFallback: kWabKaiFallback,
-        ),
-        decoration: wabInputDecoration(context, hintText: hintText),
+      initialValue: value,
+      items: items.entries
+          .map((e) => DropdownMenuItem<T>(value: e.key, child: Text(e.value)))
+          .toList(),
+      onChanged: onChanged,
+      dropdownColor: wab.surfaceColor,
+      style: TextStyle(
+        color: wab.textColor,
+        fontFamilyFallback: kWabKaiFallback,
+      ),
+      decoration: wabInputDecoration(context, hintText: hintText),
     );
   }
 }

@@ -83,8 +83,10 @@ class _WoodSlabEdgePainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     // The top/left catch light while the lower/right edges reveal thickness.
-    canvas.drawLine(const Offset(.8, .8), Offset(size.width - 1.0, .8), highlight);
-    canvas.drawLine(const Offset(.8, .8), Offset(.8, size.height - 1.0), highlight);
+    canvas.drawLine(
+        const Offset(.8, .8), Offset(size.width - 1.0, .8), highlight);
+    canvas.drawLine(
+        const Offset(.8, .8), Offset(.8, size.height - 1.0), highlight);
     canvas.drawLine(
       Offset(1.0, size.height - .8),
       Offset(size.width - .8, size.height - .8),

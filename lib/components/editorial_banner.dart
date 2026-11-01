@@ -49,105 +49,109 @@ class WabEditorialBanner extends StatelessWidget {
             // turned text size up needs proportionally more room for the same
             // parts.
             final textScale =
-                MediaQuery.textScalerOf(context).scale(WabType.body) / WabType.body;
+                MediaQuery.textScalerOf(context).scale(WabType.body) /
+                    WabType.body;
             final room = constraints.maxWidth / textScale;
             final showMotto = motto != null && room >= _mottoWidth;
             final showKitLabel = room >= _kitLabelWidth;
             final showSubtitle = room >= _subtitleWidth;
             return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              brand,
-              style: const TextStyle(
-                fontFamily: kWabDisplayFamily,
-                fontFamilyFallback: kWabDisplayFallback,
-                fontSize: WabType.brand,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 7,
-                height: 1,
-              ).copyWith(color: wab.textColor),
-            ),
-            if (showKitLabel) ...[
-              const SizedBox(width: 16),
-              Container(
-                width: WAB_RULE_HAIRLINE,
-                height: 54,
-                color: wab.lineColor,
-              ),
-              const SizedBox(width: 14),
-              SizedBox(
-                width: 84,
-                child: Text(
-                  kitLabel,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  brand,
                   style: const TextStyle(
-                    fontFamily: kWabMonoFamily,
-                    fontSize: WabType.gloss,
-                    letterSpacing: 2.6,
-                    height: 1.45,
-                  ).copyWith(color: wab.mutedColor),
+                    fontFamily: kWabDisplayFamily,
+                    fontFamilyFallback: kWabDisplayFallback,
+                    fontSize: WabType.brand,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 7,
+                    height: 1,
+                  ).copyWith(color: wab.textColor),
                 ),
-              ),
-            ],
-            const SizedBox(width: 22),
-            Flexible(
-              flex: 3,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          title,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: kWabDisplayFamily,
-                            fontFamilyFallback: kWabDisplayFallback,
-                            fontSize: WabType.label,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 2.5,
-                          ).copyWith(color: wab.textColor),
-                        ),
-                      ),
-                      if (seal != null) ...[const SizedBox(width: 9), seal!],
-                    ],
+                if (showKitLabel) ...[
+                  const SizedBox(width: 16),
+                  Container(
+                    width: WAB_RULE_HAIRLINE,
+                    height: 54,
+                    color: wab.lineColor,
                   ),
-                  if (showSubtitle) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                  const SizedBox(width: 14),
+                  SizedBox(
+                    width: 84,
+                    child: Text(
+                      kitLabel,
                       style: const TextStyle(
                         fontFamily: kWabMonoFamily,
                         fontSize: WabType.gloss,
-                        letterSpacing: 3.1,
+                        letterSpacing: 2.6,
+                        height: 1.45,
                       ).copyWith(color: wab.mutedColor),
                     ),
-                  ],
+                  ),
                 ],
-              ),
-            ),
-            const Spacer(),
-            if (showMotto)
-              Padding(
-                padding: const EdgeInsets.only(right: 18),
-                child: Text(
-                  motto!,
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                    fontFamily: kWabKaiFamily,
-                    fontFamilyFallback: kWabKaiFallback,
-                    fontSize: WabType.gloss,
-                    letterSpacing: 1.6,
-                  ).copyWith(color: wab.mutedColor),
+                const SizedBox(width: 22),
+                Flexible(
+                  flex: 3,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              title,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontFamily: kWabDisplayFamily,
+                                fontFamilyFallback: kWabDisplayFallback,
+                                fontSize: WabType.label,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 2.5,
+                              ).copyWith(color: wab.textColor),
+                            ),
+                          ),
+                          if (seal != null) ...[
+                            const SizedBox(width: 9),
+                            seal!
+                          ],
+                        ],
+                      ),
+                      if (showSubtitle) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: kWabMonoFamily,
+                            fontSize: WabType.gloss,
+                            letterSpacing: 3.1,
+                          ).copyWith(color: wab.mutedColor),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              ),
-            ...trailing,
-          ],
+                const Spacer(),
+                if (showMotto)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 18),
+                    child: Text(
+                      motto!,
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                        fontFamily: kWabKaiFamily,
+                        fontFamilyFallback: kWabKaiFallback,
+                        fontSize: WabType.gloss,
+                        letterSpacing: 1.6,
+                      ).copyWith(color: wab.mutedColor),
+                    ),
+                  ),
+                ...trailing,
+              ],
             );
           },
         ),

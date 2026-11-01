@@ -23,7 +23,8 @@ class WabPaperSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark ?? WabTheme.of(context).isDark;
-    final base = dark ? WAB_TEXTURE_PAPER_BASE_DARK : WAB_TEXTURE_PAPER_BASE_LIGHT;
+    final base =
+        dark ? WAB_TEXTURE_PAPER_BASE_DARK : WAB_TEXTURE_PAPER_BASE_LIGHT;
     return ColoredBox(
       color: base,
       child: Stack(
@@ -72,9 +73,13 @@ class _SheetAgePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
-    final shadow = isDark ? WAB_TEXTURE_PAPER_CREASE_DARK : WAB_TEXTURE_PAPER_CREASE_LIGHT;
-    final light = isDark ? WAB_TEXTURE_PAPER_HIGHLIGHT_DARK : WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT;
-    final age = isDark ? WAB_TEXTURE_PAPER_AGE_DARK : WAB_TEXTURE_PAPER_AGE_LIGHT;
+    final shadow =
+        isDark ? WAB_TEXTURE_PAPER_CREASE_DARK : WAB_TEXTURE_PAPER_CREASE_LIGHT;
+    final light = isDark
+        ? WAB_TEXTURE_PAPER_HIGHLIGHT_DARK
+        : WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT;
+    final age =
+        isDark ? WAB_TEXTURE_PAPER_AGE_DARK : WAB_TEXTURE_PAPER_AGE_LIGHT;
 
     // Internal grid folds are gapless: mostly a shallow shadow ridge, with only
     // a hair of reflected light. No bright band that reads as spacing.

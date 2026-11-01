@@ -85,7 +85,8 @@ class _SealOutlinePainter extends CustomPainter {
   final OutlinedBorder shape;
 
   @override
-  void paint(Canvas canvas, Size size) => shape.paint(canvas, Offset.zero & size);
+  void paint(Canvas canvas, Size size) =>
+      shape.paint(canvas, Offset.zero & size);
 
   @override
   bool shouldRepaint(_SealOutlinePainter old) => old.shape != shape;

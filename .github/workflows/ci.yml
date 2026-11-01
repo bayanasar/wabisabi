@@ -35,6 +35,8 @@ jobs:
         working-directory: example
       - run: flutter test
         working-directory: example
+      # After both pub gets: the style follows each package's language version.
+      - run: dart format --output=none --set-exit-if-changed lib test tool example/lib example/test
 
   check_web_tokens:
     name: Web token drift

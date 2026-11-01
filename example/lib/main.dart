@@ -27,7 +27,8 @@ class _WabisabiExampleState extends State<WabisabiExample> {
       themeMode: mode,
       home: Golden1Showcase(
         onToggleTheme: () => setState(
-          () => mode = mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
+          () =>
+              mode = mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
         ),
       ),
     );

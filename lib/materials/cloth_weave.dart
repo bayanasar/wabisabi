@@ -19,14 +19,18 @@ class WabClothWeave extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
     final rnd = math.Random(seed);
-    final base = isDark ? WAB_TEXTURE_CLOTH_BASE_DARK : WAB_TEXTURE_CLOTH_BASE_LIGHT;
-    final deep = isDark ? WAB_TEXTURE_CLOTH_DEEP_DARK : WAB_TEXTURE_CLOTH_DEEP_LIGHT;
-    final thread = isDark ? WAB_TEXTURE_CLOTH_THREAD_DARK : WAB_TEXTURE_CLOTH_THREAD_LIGHT;
+    final base =
+        isDark ? WAB_TEXTURE_CLOTH_BASE_DARK : WAB_TEXTURE_CLOTH_BASE_LIGHT;
+    final deep =
+        isDark ? WAB_TEXTURE_CLOTH_DEEP_DARK : WAB_TEXTURE_CLOTH_DEEP_LIGHT;
+    final thread =
+        isDark ? WAB_TEXTURE_CLOTH_THREAD_DARK : WAB_TEXTURE_CLOTH_THREAD_LIGHT;
     canvas.drawRect(Offset.zero & size, Paint()..color = base);
 
     // Quiet indigo dye variation beneath the weave.
     for (var i = 0; i < 5; i++) {
-      final r = math.min(size.width, size.height) * (.16 + rnd.nextDouble() * .22);
+      final r =
+          math.min(size.width, size.height) * (.16 + rnd.nextDouble() * .22);
       canvas.drawCircle(
         Offset(rnd.nextDouble() * size.width, rnd.nextDouble() * size.height),
         r,
@@ -68,7 +72,8 @@ class WabClothWeave extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(WabClothWeave old) => old.isDark != isDark || old.seed != seed;
+  bool shouldRepaint(WabClothWeave old) =>
+      old.isDark != isDark || old.seed != seed;
 }
 
 class WabClothTexture extends StatelessWidget {
@@ -79,7 +84,8 @@ class WabClothTexture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CustomPaint(
-        painter: WabClothWeave(isDark: isDark ?? WabTheme.of(context).isDark, seed: seed),
+        painter: WabClothWeave(
+            isDark: isDark ?? WabTheme.of(context).isDark, seed: seed),
         child: child,
       );
 }

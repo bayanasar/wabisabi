@@ -105,14 +105,16 @@ matters is enforced by scripts in `tool/`, not by prose.
 - 2026-11-01 `WabDotGrid` does not mirror under RTL — a grid is row-major data,
   and a consumer's axes and hit test assume column 0 at the left. 0.2.2 changed
   this without recording it.
+- 2026-11-01 CI checks `dart format` over `lib`, `test`, `tool`, `example/lib`
+  and `example/test` — it had changed 50 of 70 files, so every edit dragged
+  unrelated reflow into its diff. The style is the pre-3.7 one because the SDK
+  floor is 3.0; raising the floor to 3.7 or above reformats the tree.
 
 ## Open
 
 - The 0.2.1 commit reads red: run 34, started by the tag push, failed after
   the runner's host restarted ten minutes in. The same commit passed runs 26,
   27 and 30. Re-running run 34 needs a forge login.
-- The formatter is not in CI: `dart format` would change 44 of 63 files under
-  `lib/`, `test/` and `tool/`.
 - #23 one lift, dark theme as lamplight; #24 containers catalogue cell — on
   main; the issues are still open.
 - #9 bare `CupertinoApp` palette falls back to system colours.

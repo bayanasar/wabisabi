@@ -57,7 +57,8 @@ Widget kitChromeSection(BuildContext context) {
               150,
               76,
               WabScaffold(
-                title: const Text('卷 一', style: TextStyle(fontSize: WabType.gloss)),
+                title: const Text('卷 一',
+                    style: TextStyle(fontSize: WabType.gloss)),
                 body: Center(
                   child: Text('body', style: _caption(wab)),
                 ),
@@ -69,7 +70,8 @@ Widget kitChromeSection(BuildContext context) {
               150,
               76,
               WabTexturedScaffold(
-                title: const Text('卷 二', style: TextStyle(fontSize: WabType.gloss)),
+                title: const Text('卷 二',
+                    style: TextStyle(fontSize: WabType.gloss)),
                 body: Center(
                   child: Text('ambient ground', style: _caption(wab)),
                 ),
@@ -81,7 +83,8 @@ Widget kitChromeSection(BuildContext context) {
               150,
               52,
               WabAppBar(
-                title: const Text('題 名', style: TextStyle(fontSize: WabType.gloss)),
+                title: const Text('題 名',
+                    style: TextStyle(fontSize: WabType.gloss)),
                 action: const Icon(Icons.more_horiz, size: 15),
               ),
             ),
@@ -188,15 +191,27 @@ Widget kitMaterialsSection(BuildContext context) {
       children: [
         _specimen(wab, '宣紙\nWabPaperTexture', w, h,
             onPaper(WabPaperTexture(child: const SizedBox.expand()))),
-        _specimen(wab, '雲斑\nWabPaperTextureKind', w, h,
+        _specimen(
+            wab,
+            '雲斑\nWabPaperTextureKind',
+            w,
+            h,
             onPaper(WabPaperTexture(
               kind: WabPaperTextureKind.mottle,
               child: const SizedBox.expand(),
             ))),
-        _specimen(wab, '纖紙\nWabFiberTexture', w, h,
+        _specimen(
+            wab,
+            '纖紙\nWabFiberTexture',
+            w,
+            h,
             onPaper(
                 WabFiberTexture(strength: 1, child: const SizedBox.expand()))),
-        _specimen(wab, '木紋\nWabWoodGrain', w, h,
+        _specimen(
+            wab,
+            '木紋\nWabWoodGrain',
+            w,
+            h,
             CustomPaint(
               painter: WabWoodGrain(isDark: dark),
               child: const SizedBox.expand(),
@@ -205,7 +220,11 @@ Widget kitMaterialsSection(BuildContext context) {
             WabWoodSlab(radius: 3, child: const SizedBox.expand())),
         _specimen(wab, '布紋\nWabClothTexture', w, h,
             WabClothTexture(child: const SizedBox.expand())),
-        _specimen(wab, '織紋\nWabClothWeave', w, h,
+        _specimen(
+            wab,
+            '織紋\nWabClothWeave',
+            w,
+            h,
             CustomPaint(
               painter: WabClothWeave(isDark: dark),
               child: const SizedBox.expand(),
@@ -218,18 +237,30 @@ Widget kitMaterialsSection(BuildContext context) {
             WabPatinaTexture(child: const SizedBox.expand())),
         _specimen(wab, '拓片\nWabRubbingTexture', w, h,
             const WabRubbingTexture(child: SizedBox.expand())),
-        _specimen(wab, '墨暈\nWabInkWash', w, h,
+        _specimen(
+            wab,
+            '墨暈\nWabInkWash',
+            w,
+            h,
             onPaper(CustomPaint(
               painter: WabInkWash(colors: wab),
               child: const SizedBox.expand(),
             ))),
-        _specimen(wab, '毛邊\nWabDeckleSurface', w, h,
+        _specimen(
+            wab,
+            '毛邊\nWabDeckleSurface',
+            w,
+            h,
             WabDeckleSurface(
               fill: paper,
               texture: WabPaperTexture(),
               child: const SizedBox.expand(),
             )),
-        _specimen(wab, '邊形\nDeckleBorder', w, h,
+        _specimen(
+            wab,
+            '邊形\nDeckleBorder',
+            w,
+            h,
             DecoratedBox(
               decoration: ShapeDecoration(
                 color: paper,

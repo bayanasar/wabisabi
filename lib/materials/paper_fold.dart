@@ -48,9 +48,8 @@ class _PaperFoldPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
-    final crease = isDark
-        ? WAB_TEXTURE_PAPER_CREASE_DARK
-        : WAB_TEXTURE_PAPER_CREASE_LIGHT;
+    final crease =
+        isDark ? WAB_TEXTURE_PAPER_CREASE_DARK : WAB_TEXTURE_PAPER_CREASE_LIGHT;
     final highlight = isDark
         ? WAB_TEXTURE_PAPER_HIGHLIGHT_DARK
         : WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT;

@@ -132,8 +132,8 @@ class _WabButtonState extends State<WabButton> {
           decoration: TextDecoration.none,
         );
     final fullLabelStyle = baseStyle.merge(labelStyle).copyWith(
-      decoration: TextDecoration.none,
-    );
+          decoration: TextDecoration.none,
+        );
 
     Widget content = Padding(
       padding: pad,
@@ -175,16 +175,34 @@ class _WabButtonState extends State<WabButton> {
     // Hover lifts further; pressed nearly sits down. Ink by day, lamplight by
     // night — see wabLift.
     final interactionShadow = switch (state) {
-      WabButtonVisualState.hover => wabLift(dark: dark, strength: 1.2, reach: .7),
-      WabButtonVisualState.pressed => wabLift(dark: dark, strength: .6, reach: .15),
+      WabButtonVisualState.hover =>
+        wabLift(dark: dark, strength: 1.2, reach: .7),
+      WabButtonVisualState.pressed =>
+        wabLift(dark: dark, strength: .6, reach: .15),
       _ => const <BoxShadow>[],
     };
 
     final toneFilter = ColorFilter.matrix([
-      tone, 0, 0, 0, 0,
-      0, tone, 0, 0, 0,
-      0, 0, tone, 0, 0,
-      0, 0, 0, 1, 0,
+      tone,
+      0,
+      0,
+      0,
+      0,
+      0,
+      tone,
+      0,
+      0,
+      0,
+      0,
+      0,
+      tone,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
     ]);
 
     return MouseRegion(
@@ -202,14 +220,10 @@ class _WabButtonState extends State<WabButton> {
       child: GestureDetector(
         onTapDown: (_) => _set(WabButtonVisualState.pressed),
         onTapUp: (_) => _set(
-          _hovering
-              ? WabButtonVisualState.hover
-              : WabButtonVisualState.normal,
+          _hovering ? WabButtonVisualState.hover : WabButtonVisualState.normal,
         ),
         onTapCancel: () => _set(
-          _hovering
-              ? WabButtonVisualState.hover
-              : WabButtonVisualState.normal,
+          _hovering ? WabButtonVisualState.hover : WabButtonVisualState.normal,
         ),
         onTap: widget.onPressed,
         child: AnimatedOpacity(
@@ -383,7 +397,6 @@ class WabIconButton extends StatelessWidget {
       ),
     );
   }
-
 }
 
 /// 界行式文字鈕 — text only, separated by fine book-page rules.
@@ -439,7 +452,6 @@ class WabTextButton extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class WabElevatedButton extends StatelessWidget {
@@ -483,7 +495,6 @@ class WabElevatedButton extends StatelessWidget {
       ],
     );
   }
-
 }
 
 enum WabTogglePair { paper, woodCloth, jadeBaiwen, sealZhuwen }
@@ -523,7 +534,6 @@ class WabToggleButton extends StatelessWidget {
       child: text,
     );
   }
-
 }
 
 /// 落印 — the primary action as a pressed seal rather than a floating disc.

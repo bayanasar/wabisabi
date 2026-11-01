@@ -144,14 +144,14 @@ class WabTheme {
       );
     }
 
-    final baseTextTheme =
-        baseTextThemeOf(base.textTheme).apply(fontFamilyFallback: kWabKaiFallback);
+    final baseTextTheme = baseTextThemeOf(base.textTheme)
+        .apply(fontFamilyFallback: kWabKaiFallback);
 
     return base.copyWith(
       extensions: [colors],
       appBarTheme: base.appBarTheme.copyWith(
         elevation: 0.0,
-        backgroundColor: colors.backgroundColor,  // flat — matches scaffold
+        backgroundColor: colors.backgroundColor, // flat — matches scaffold
         toolbarTextStyle: baseTextTheme.bodyMedium,
         titleTextStyle: baseTextTheme.titleLarge,
       ),

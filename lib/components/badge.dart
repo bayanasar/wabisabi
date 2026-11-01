@@ -87,15 +87,15 @@ class WabStarRating extends StatelessWidget {
   Widget build(BuildContext context) {
     final wab = WabTheme.of(context);
     return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(max, (i) {
-          final filled = i < rating;
-          return Icon(
-            filled ? Icons.star : Icons.star_border,
-            size: size,
-            color: filled ? wab.accentColor : wab.secondaryColor,
-          );
-        }),
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(max, (i) {
+        final filled = i < rating;
+        return Icon(
+          filled ? Icons.star : Icons.star_border,
+          size: size,
+          color: filled ? wab.accentColor : wab.secondaryColor,
+        );
+      }),
     );
   }
 }

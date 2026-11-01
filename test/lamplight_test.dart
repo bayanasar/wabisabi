@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wabisabi/wabisabi.dart';
 
-bool _sameHue(Color a, Color b) => a.withValues(alpha: 1) == b.withValues(alpha: 1);
+bool _sameHue(Color a, Color b) =>
+    a.withValues(alpha: 1) == b.withValues(alpha: 1);
 
 void main() {
   test('the dark theme casts lamplight, not ink', () {

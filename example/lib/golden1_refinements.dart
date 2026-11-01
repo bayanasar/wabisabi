@@ -4,9 +4,7 @@ import 'package:wabisabi/wabisabi.dart';
 /// Composition only: all visible primitives are public wabisabi APIs.
 Widget refinedRulesSection(BuildContext context) {
   final wab = WabTheme.of(context);
-  final ruleFill = wab.isDark
-      ? wab.scratchColor
-      : WAB_TEXTURE_PAPER_BASE_LIGHT;
+  final ruleFill = wab.isDark ? wab.scratchColor : WAB_TEXTURE_PAPER_BASE_LIGHT;
 
   Widget specimen(WabRuleKind kind, String label) => Expanded(
         child: Column(
@@ -121,9 +119,8 @@ Widget refinedRulesSection(BuildContext context) {
             cols: 9,
             states: List.generate(9, (i) => i),
             styleOf: (s) => WabInkDotStyle(
-              color: s == 4
-                  ? wab.textColor
-                  : wab.mutedColor.withValues(alpha: .5),
+              color:
+                  s == 4 ? wab.textColor : wab.mutedColor.withValues(alpha: .5),
             ),
             dotSize: 5,
             gap: 7,
@@ -161,7 +158,8 @@ Widget refinedButtonsSection(BuildContext context) {
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 6),
                 child: item.$3 == WabMaterialKind.baiwen ||
                         item.$3 == WabMaterialKind.zhuwen
-                    ? WabSealText(item.$1, fontSize: WabType.title, strokeWidth: .7)
+                    ? WabSealText(item.$1,
+                        fontSize: WabType.title, strokeWidth: .7)
                     : Text(item.$1),
               ),
               const SizedBox(height: 3),

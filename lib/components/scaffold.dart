@@ -94,13 +94,13 @@ class WabScaffold extends WabWidget {
   Scaffold createMaterialWidget(BuildContext context) {
     final wab = WabTheme.of(context);
     return Scaffold(
-        backgroundColor: textured ? wab.backgroundColor : null,
-        appBar: appBar?.createMaterialWidget(context) ??
-            WabAppBar(title: title).createMaterialWidget(context),
-        body: _ground(wab, body),
-        floatingActionButton: floatingActionButton,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        floatingActionButtonAnimator: floatingActionButtonAnimator,
+      backgroundColor: textured ? wab.backgroundColor : null,
+      appBar: appBar?.createMaterialWidget(context) ??
+          WabAppBar(title: title).createMaterialWidget(context),
+      body: _ground(wab, body),
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButtonAnimator: floatingActionButtonAnimator,
     );
   }
 }
@@ -247,10 +247,20 @@ class WabTexturePainter extends CustomPainter {
     // Layer 1 — cloud tonal variation: overlapping translucent ellipses
     // Some warmer, some slightly cooler, creates the watercolor cloudiness.
     const cloudPositions = [
-      [0.08, 0.12], [0.55, 0.07], [0.82, 0.18], [0.25, 0.35],
-      [0.70, 0.30], [0.10, 0.60], [0.45, 0.55], [0.90, 0.65],
-      [0.30, 0.80], [0.65, 0.75], [0.15, 0.92], [0.80, 0.88],
-      [0.50, 0.20], [0.40, 0.70],
+      [0.08, 0.12],
+      [0.55, 0.07],
+      [0.82, 0.18],
+      [0.25, 0.35],
+      [0.70, 0.30],
+      [0.10, 0.60],
+      [0.45, 0.55],
+      [0.90, 0.65],
+      [0.30, 0.80],
+      [0.65, 0.75],
+      [0.15, 0.92],
+      [0.80, 0.88],
+      [0.50, 0.20],
+      [0.40, 0.70],
     ];
     final warmCloud = Paint()
       ..color = WAB_WASHI_CLOUD_WARM
@@ -263,7 +273,9 @@ class WabTexturePainter extends CustomPainter {
       final cy = cloudPositions[k][1] * h;
       final rx = 80.0 + _rand(k, 1) * 100;
       final ry = 60.0 + _rand(k, 2) * 80;
-      canvas.drawOval(Rect.fromCenter(center: Offset(cx, cy), width: rx * 2, height: ry * 2),
+      canvas.drawOval(
+          Rect.fromCenter(
+              center: Offset(cx, cy), width: rx * 2, height: ry * 2),
           k.isEven ? warmCloud : coolCloud);
     }
 
@@ -317,7 +329,12 @@ class WabTexturePainter extends CustomPainter {
     final warmPatch = Paint()
       ..color = WAB_LACQUER_PATCH
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 70);
-    const patches = [[0.25, 0.30], [0.70, 0.60], [0.45, 0.80], [0.80, 0.20]];
+    const patches = [
+      [0.25, 0.30],
+      [0.70, 0.60],
+      [0.45, 0.80],
+      [0.80, 0.20]
+    ];
     for (int k = 0; k < patches.length; k++) {
       final cx = patches[k][0] * w;
       final cy = patches[k][1] * h;
@@ -332,7 +349,8 @@ class WabTexturePainter extends CustomPainter {
     for (int i = 0; i < w.toInt(); i += 3) {
       for (int j = 0; j < h.toInt(); j += 3) {
         if (_rand(i, j) > 0.85) {
-          canvas.drawCircle(Offset(i.toDouble(), j.toDouble()), 0.6, grainPaint);
+          canvas.drawCircle(
+              Offset(i.toDouble(), j.toDouble()), 0.6, grainPaint);
         }
       }
     }

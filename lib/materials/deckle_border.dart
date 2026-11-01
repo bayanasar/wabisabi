@@ -57,7 +57,8 @@ class WabDeckleBorder extends OutlinedBorder {
       final amp = (idx == 0 || idx == 2) ? horizontalRoughness : roughness;
       // With a corner radius, each edge stops short of the corners and the
       // corners are bridged with quadratic arcs.
-      final span = rad > 0 ? rad / ((idx == 0 || idx == 2) ? r.width : r.height) : 0.0;
+      final span =
+          rad > 0 ? rad / ((idx == 0 || idx == 2) ? r.width : r.height) : 0.0;
       for (var i = 0; i <= steps; i++) {
         final t = span + (i / steps) * (1 - span * 2);
         final base = pt(t);

@@ -31,7 +31,8 @@ class WabFiberTexture extends StatelessWidget {
 }
 
 class _FiberTexturePainter extends CustomPainter {
-  const _FiberTexturePainter({required this.isDark, required this.seed, required this.strength});
+  const _FiberTexturePainter(
+      {required this.isDark, required this.seed, required this.strength});
   final bool isDark;
   final int seed;
   final double strength;
@@ -42,7 +43,9 @@ class _FiberTexturePainter extends CustomPainter {
     final rnd = math.Random(seed);
     final count = (size.width * size.height / 3400).clamp(7, 88).round();
     final tint = isDark ? WAB_TEXTURE_FIBER_DARK : WAB_TEXTURE_FIBER_LIGHT;
-    final pale = isDark ? WAB_TEXTURE_PAPER_HIGHLIGHT_DARK : WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT;
+    final pale = isDark
+        ? WAB_TEXTURE_PAPER_HIGHLIGHT_DARK
+        : WAB_TEXTURE_PAPER_HIGHLIGHT_LIGHT;
 
     for (var i = 0; i < count; i++) {
       final x = rnd.nextDouble() * size.width;
@@ -65,7 +68,8 @@ class _FiberTexturePainter extends CustomPainter {
       canvas.drawPath(
         path,
         Paint()
-          ..color = (i % 7 == 0 ? pale : tint).withValues(alpha: opacity.clamp(0, .16))
+          ..color = (i % 7 == 0 ? pale : tint)
+              .withValues(alpha: opacity.clamp(0, .16))
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeWidth = .28 + rnd.nextDouble() * .50,
@@ -74,10 +78,16 @@ class _FiberTexturePainter extends CustomPainter {
 
     final knots = math.max(1, (count / 10).round());
     for (var i = 0; i < knots; i++) {
-      final c = Offset(rnd.nextDouble() * size.width, rnd.nextDouble() * size.height);
+      final c =
+          Offset(rnd.nextDouble() * size.width, rnd.nextDouble() * size.height);
       canvas.drawOval(
-        Rect.fromCenter(center: c, width: 1.5 + rnd.nextDouble() * 4, height: .5 + rnd.nextDouble() * 1.4),
-        Paint()..color = tint.withValues(alpha: (.035 + rnd.nextDouble() * .045) * strength),
+        Rect.fromCenter(
+            center: c,
+            width: 1.5 + rnd.nextDouble() * 4,
+            height: .5 + rnd.nextDouble() * 1.4),
+        Paint()
+          ..color = tint.withValues(
+              alpha: (.035 + rnd.nextDouble() * .045) * strength),
       );
     }
   }
