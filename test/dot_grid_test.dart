@@ -34,6 +34,21 @@ void main() {
       'zero-width border': WabInkDotStyle(color: paper, borderColor: ink),
     };
 
+    // Styles the batched fills skip: a fill of no radius and a clear fill.
+    // Only the single-dot tests use them.
+    const unfilled = <String, WabInkDotStyle>{
+      'opaque border as wide as the dot': WabInkDotStyle(
+        color: ink,
+        borderColor: rust,
+        borderWidth: 11,
+      ),
+      'clear fill inside a ring': WabInkDotStyle(
+        color: Color(0x00000000),
+        borderColor: ink,
+        borderWidth: 1.5,
+      ),
+    };
+
     Future<Uint8List> pixelsOf(
       WidgetTester tester,
       Widget dot, {
@@ -73,7 +88,10 @@ void main() {
       return count;
     }
 
-    for (final MapEntry(key: name, value: style) in styles.entries) {
+    for (final MapEntry(key: name, value: style) in {
+      ...styles,
+      ...unfilled,
+    }.entries) {
       testWidgets(name, (tester) async {
         final dot = await pixelsOf(
           tester,
@@ -347,4 +365,53 @@ void main() {
       expect(largeElements, lessThan(10));
     },
   );
+
+  testWidgets('draw calls do not grow with the number of dots', (tester) async {
+    // A draw per dot cost the raster thread for every dot on every frame:
+    // about 20 ms a frame for 3,390 dots on a phone, picture reused or not.
+    // Fills go out in one call per colour and radius, so a 65x53 grid of
+    // three colours makes as many calls as a 2x2 grid of the same three.
+    Future<int> drawsFor(int rows, int cols) async {
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Center(
+            child: WabDotGrid<int>(
+              rows: rows,
+              cols: cols,
+              states: List<int>.generate(rows * cols, (index) => index % 3),
+              styleOf: (state) => WabInkDotStyle(
+                color: Color(0xFF000000 + state * 0x333333),
+              ),
+              dotSize: 4,
+              gap: 1,
+            ),
+          ),
+        ),
+      );
+      final paint = tester.widget<CustomPaint>(find.byType(CustomPaint));
+      final canvas = _DrawCountingCanvas();
+      paint.painter!.paint(canvas, tester.getSize(find.byWidget(paint)));
+      return canvas.draws;
+    }
+
+    final small = await drawsFor(2, 2);
+    final large = await drawsFor(65, 53);
+
+    expect(small, 3);
+    expect(large, small);
+  });
+}
+
+/// Counts the draw calls a painter makes, and records nothing.
+class _DrawCountingCanvas implements Canvas {
+  int draws = 0;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    if (invocation.memberName.toString().contains('"draw')) {
+      draws++;
+    }
+    return null;
+  }
 }

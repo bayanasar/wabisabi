@@ -1,3 +1,5 @@
+import 'dart:ui' show PointMode;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -133,15 +135,22 @@ class _WabDotGridPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final radius = dotSize / 2;
     final step = dotSize + gap;
-    final fill = Paint()..style = PaintingStyle.fill;
-    final stroke = Paint()..style = PaintingStyle.stroke;
 
+    // Fills are drawn in batches, one call per colour and radius: a point
+    // stroked with a round cap as wide as the dot is that dot. A call per dot
+    // costs the raster thread for every dot on every frame: Impeller keeps no
+    // raster cache, so it replays the picture even when it is reused.
+    final fills = <(Color, double), List<double>>{};
+    final bordered = <int>[];
     for (var row = 0; row < rows; row++) {
       final y = radius + row * step;
       for (var col = 0; col < cols; col++) {
-        final style = styles[row * cols + col];
-        final center = Offset(radius + col * step, y);
+        final index = row * cols + col;
+        final style = styles[index];
         final borderColor = style.borderColor;
+        if (borderColor != null) {
+          bordered.add(index);
+        }
 
         // As in BoxDecoration, an opaque border (8-bit alpha 255) holds the
         // fill back to the border's centre line, out of its anti-aliased
@@ -150,21 +159,49 @@ class _WabDotGridPainter extends CustomPainter {
             borderColor != null && (borderColor.a * 255.0).round() == 255
                 ? style.borderWidth / 2
                 : 0.0;
-        fill.color = style.color;
-        canvas.drawCircle(center, radius - fillInset, fill);
-
-        // A zero width draws a hairline, as a zero-width BorderSide does.
-        if (borderColor != null) {
-          stroke
-            ..color = borderColor
-            ..strokeWidth = style.borderWidth;
-          canvas.drawCircle(
-            center,
-            (radius - style.borderWidth / 2).clamp(0, radius),
-            stroke,
-          );
+        final fillRadius = radius - fillInset;
+        // A zero-width point would still draw a hairline dot; a circle of no
+        // radius draws nothing, and neither does a clear colour.
+        if (fillRadius <= 0 || style.color.a == 0) {
+          continue;
         }
+        (fills[(style.color, fillRadius)] ??= <double>[])
+          ..add(radius + col * step)
+          ..add(y);
       }
+    }
+
+    final fill = Paint()..strokeCap = StrokeCap.round;
+    for (final MapEntry(key: (color, fillRadius), value: points)
+        in fills.entries) {
+      fill
+        ..color = color
+        ..strokeWidth = fillRadius * 2;
+      canvas.drawRawPoints(
+        PointMode.points,
+        Float32List.fromList(points),
+        fill,
+      );
+    }
+
+    // Borders are few, and drawn one by one over the fills. Dots do not
+    // overlap, so drawing every fill first changes no pixel.
+    final stroke = Paint()..style = PaintingStyle.stroke;
+    for (final index in bordered) {
+      final style = styles[index];
+      final center = Offset(
+        radius + (index % cols) * step,
+        radius + (index ~/ cols) * step,
+      );
+      // A zero width draws a hairline, as a zero-width BorderSide does.
+      stroke
+        ..color = style.borderColor!
+        ..strokeWidth = style.borderWidth;
+      canvas.drawCircle(
+        center,
+        (radius - style.borderWidth / 2).clamp(0, radius),
+        stroke,
+      );
     }
   }
 

@@ -4,6 +4,12 @@
 
 ### Changed
 
+- `WabDotGrid` draws its fills in one call per colour and radius instead of
+  one per dot; borders are still drawn one by one. Impeller replays every draw
+  on every frame, picture reused or not: on a phone, a 3,390-dot grid cost
+  about 26 ms of raster per frame and now costs about 6.5 ms. Under the test
+  rasterizer each dot draws the same pixels as before; on Impeller the
+  anti-aliased edges may shift by up to 12/255 in a channel.
 - `WabDotGrid` no longer mirrors under right-to-left text, a change made in
   0.2.2 and not recorded there. Column 0 is at the left in every direction, and
   the gaps are even. The widget layout it replaced put column 0 at the right
