@@ -137,9 +137,11 @@ class _WabDotGridPainter extends CustomPainter {
     final step = dotSize + gap;
 
     // Fills are drawn in batches, one call per colour and radius: a point
-    // stroked with a round cap as wide as the dot is that dot. A call per dot
-    // costs the raster thread for every dot on every frame: Impeller keeps no
-    // raster cache, so it replays the picture even when it is reused.
+    // stroked with a round cap as wide as the dot covers the dot's disc. A
+    // call per dot costs the raster thread for every dot on every frame:
+    // Impeller keeps no raster cache, so it replays the picture even when it
+    // is reused. The point can anti-alias the disc's edge pixels a little
+    // differently from a circle; nothing off that edge changes.
     final fills = <(Color, double), List<double>>{};
     final bordered = <int>[];
     for (var row = 0; row < rows; row++) {
@@ -184,8 +186,10 @@ class _WabDotGridPainter extends CustomPainter {
       );
     }
 
-    // Borders are few, and drawn one by one over the fills. Dots do not
-    // overlap, so drawing every fill first changes no pixel.
+    // Borders are few, and drawn one by one over the fills, so each border
+    // still lies over its own fill. The order is no longer dot by dot: where
+    // two dots' edges share a pixel, as they do once the gap is under about a
+    // device pixel, that pixel composites in another order.
     final stroke = Paint()..style = PaintingStyle.stroke;
     for (final index in bordered) {
       final style = styles[index];

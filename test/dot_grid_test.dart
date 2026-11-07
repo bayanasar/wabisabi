@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/rendering.dart';
@@ -202,6 +203,157 @@ void main() {
       expect(differingPixels(rtl, ltr), 0);
     });
   });
+
+  testWidgets(
+    'batched fills change only pixels on a dot edge, with or without a gap',
+    (tester) async {
+      // Drawn dot by dot, each fill went down before the next dot. Batched, a
+      // round-capped point covers the same disc as the circle it replaced but
+      // can anti-alias its edge pixels differently, and where two dots' edges
+      // share a pixel (a gap under about one device pixel) that pixel
+      // composites in another order. Either way, only pixels within about a
+      // device pixel of a dot's edge may change, and by a bounded amount.
+      const ink = Color(0xFF1A1A1A);
+      const paper = Color(0xFFFAF6EC);
+      const rust = Color(0xFF9A4337);
+      const grey = Color(0xFFD8D8D3);
+      const styles = <WabInkDotStyle>[
+        WabInkDotStyle(color: grey),
+        WabInkDotStyle(color: ink, borderColor: rust, borderWidth: 2),
+        WabInkDotStyle(color: paper, borderColor: ink, borderWidth: 1.5),
+        WabInkDotStyle(color: ink),
+        WabInkDotStyle(
+          color: grey,
+          borderColor: Color(0x809A4337),
+          borderWidth: 2,
+        ),
+      ];
+      const rows = 3;
+      const cols = 4;
+      final cells = [
+        for (var i = 0; i < rows * cols; i++)
+          styles[(i * 3 + i ~/ cols) % styles.length],
+      ];
+
+      Future<(Uint8List, int)> pixelsOf(
+        Widget grid,
+        double offset,
+        double pixelRatio,
+      ) async {
+        final key = GlobalKey();
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: RepaintBoundary(
+                key: key,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(1 + offset, 1 + offset, 1, 1),
+                  child: grid,
+                ),
+              ),
+            ),
+          ),
+        );
+        final boundary = tester.renderObject<RenderRepaintBoundary>(
+          find.byKey(key),
+        );
+        final result = await tester.runAsync(() async {
+          final image = await boundary.toImage(pixelRatio: pixelRatio);
+          final bytes = await image.toByteData();
+          final width = image.width;
+          image.dispose();
+          return (bytes!.buffer.asUint8List(), width);
+        });
+        return result!;
+      }
+
+      // Measured: no changed pixel farther than 1.1 device px from an edge,
+      // none changed by more than 70. Points 0.1 px wider change edge pixels
+      // by more than 110.
+      const edgeReach = 1.5;
+      const maxChange = 80;
+      final failures = <String>[];
+      for (final pixelRatio in [1.0, 2.25, 3.0]) {
+        for (final gap in [0.0, 0.375, 0.9, 3.0]) {
+          for (final dotSize in [3.0, 7.3, 11.0]) {
+            for (final offset in [0.0, 0.3, 0.7]) {
+              final (batched, width) = await pixelsOf(
+                WabDotGrid<WabInkDotStyle>(
+                  rows: rows,
+                  cols: cols,
+                  states: cells,
+                  styleOf: (style) => style,
+                  dotSize: dotSize,
+                  gap: gap,
+                ),
+                offset,
+                pixelRatio,
+              );
+              final (dotByDot, _) = await pixelsOf(
+                SizedBox(
+                  width: cols * dotSize + (cols - 1) * gap,
+                  height: rows * dotSize + (rows - 1) * gap,
+                  child: CustomPaint(
+                    painter: _DotByDotPainter(
+                      cols: cols,
+                      styles: cells,
+                      dotSize: dotSize,
+                      gap: gap,
+                    ),
+                  ),
+                ),
+                offset,
+                pixelRatio,
+              );
+              expect(batched.length, dotByDot.length);
+
+              final origin = (1 + offset) * pixelRatio;
+              final radius = dotSize / 2 * pixelRatio;
+              final step = (dotSize + gap) * pixelRatio;
+              for (var i = 0; i < batched.length; i += 4) {
+                var change = 0;
+                for (var k = 0; k < 4; k++) {
+                  change = math.max(
+                      change, (batched[i + k] - dotByDot[i + k]).abs());
+                }
+                if (change == 0) {
+                  continue;
+                }
+                final x = (i ~/ 4) % width + 0.5 - origin;
+                final y = (i ~/ 4) ~/ width + 0.5 - origin;
+                var nearest = double.infinity;
+                for (var cell = 0; cell < cells.length; cell++) {
+                  final style = cells[cell];
+                  final borderColor = style.borderColor;
+                  final inset = borderColor != null &&
+                          (borderColor.a * 255.0).round() == 255
+                      ? style.borderWidth / 2 * pixelRatio
+                      : 0.0;
+                  final dx = x - (radius + (cell % cols) * step);
+                  final dy = y - (radius + (cell ~/ cols) * step);
+                  final distance = math.sqrt(dx * dx + dy * dy);
+                  for (final edge in [radius - inset, radius]) {
+                    nearest = math.min(nearest, (distance - edge).abs());
+                  }
+                }
+                if (nearest > edgeReach || change > maxChange) {
+                  failures.add(
+                    'ratio $pixelRatio, gap $gap, dot $dotSize, offset '
+                    '$offset: pixel ($x, $y) changed by $change, '
+                    '${nearest.toStringAsFixed(2)} px from a dot edge',
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+
+      expect(failures.take(5), isEmpty);
+    },
+  );
 
   testWidgets(
     'large dot grid paints as one surface instead of per-dot widgets',
@@ -414,4 +566,56 @@ class _DrawCountingCanvas implements Canvas {
     }
     return null;
   }
+}
+
+/// The grid as it was drawn before its fills were batched: each dot's fill,
+/// then its border, dot by dot in row-major order.
+class _DotByDotPainter extends CustomPainter {
+  const _DotByDotPainter({
+    required this.cols,
+    required this.styles,
+    required this.dotSize,
+    required this.gap,
+  });
+
+  final int cols;
+  final List<WabInkDotStyle> styles;
+  final double dotSize;
+  final double gap;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final radius = dotSize / 2;
+    final step = dotSize + gap;
+    for (var index = 0; index < styles.length; index++) {
+      final style = styles[index];
+      final center = Offset(
+        radius + (index % cols) * step,
+        radius + (index ~/ cols) * step,
+      );
+      final borderColor = style.borderColor;
+      final fillInset =
+          borderColor != null && (borderColor.a * 255.0).round() == 255
+              ? style.borderWidth / 2
+              : 0.0;
+      canvas.drawCircle(
+        center,
+        radius - fillInset,
+        Paint()..color = style.color,
+      );
+      if (borderColor != null) {
+        canvas.drawCircle(
+          center,
+          (radius - style.borderWidth / 2).clamp(0, radius),
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..color = borderColor
+            ..strokeWidth = style.borderWidth,
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DotByDotPainter oldDelegate) => true;
 }
