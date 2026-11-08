@@ -16,8 +16,8 @@ matters is enforced by scripts in `tool/`, not by prose.
 ## Sealed
 
 - Forge CI runs the whole gate, release APK included, on the `linux-docker`
-  runner — `main` at `4b85472`: run 55 (push) and run 56 (pull request)
-  success.
+  runner — `3c83474`, tagged `0.2.3`: run 58 (pull request), run 60 (`main`
+  push) and run 61 (tag push) success.
 - Batching the fills cut a phone's raster to the floor — a consuming app's
   release build on a Pixel 9 Pro XL (Impeller, Vulkan), its 3,390-dot grid
   against `main` and against the batched painter, alternating over 6 runs of
@@ -35,6 +35,10 @@ matters is enforced by scripts in `tool/`, not by prose.
   fill not held back under an opaque border each fail it. On the phone, the
   app's grid at its default density differed from `main` only on edge pixels,
   by at most 12/255.
+- The batched grid on web changes only a few pixels inside it — a consuming
+  app's release web build against 0.2.3 and against 0.2.2, screenshots at 390,
+  860, 1000 and 1400 px at pixel ratio 1: 6, 13, 45 and 11 pixels differ, by
+  at most 16/255, all inside the grid.
 - `WabDotGrid` draws what `WabInkDot` draws, at the tested positions — the
   same file renders a one-dot grid and a `WabInkDot` of the same style at 3x
   for seven styles: 0 differing pixels. Before the 0.2.2 fix, three failed by
@@ -77,9 +81,6 @@ matters is enforced by scripts in `tool/`, not by prose.
   the app's default density, where gaps are over a device pixel. Below that,
   touching points in one draw may composite differently from the test
   rasterizer; if so, dense grids could show darker seams.
-- The batched grid on web — no release web build against 0.2.3 has been looked
-  at or compared with 0.2.2. CanvasKit is Skia, so the test rasterizer's bound
-  likely holds, but nobody ran it.
 - The reading floor on a phone or tablet — the desktop browser review covers
   web only. If hinting differs on device, 11.93 px kai may still read small.
 - Any screenshot of a shadow from `flutter test` — it sets
