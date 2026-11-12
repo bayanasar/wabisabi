@@ -23,8 +23,9 @@ matters is enforced by scripts in `tool/`, not by prose.
   against `main` and against the batched painter, alternating over 6 runs of
   10 taps at three densities: tap-frame raster p50 25.9 / 26.5 / 19.9 ms
   before, 6.6 / 6.4 / 6.5 ms after; with the grid hidden, 5.7 to 5.9 ms. On a
-  frame that re-records every dot, UI-thread build fell from 16 to 19 ms to
-  13 to 14 ms.
+  frame that re-records every dot — fey `4a86c23`, before its pin mark, at
+  100% density only — UI-thread build fell from 16.4 to 12.6 ms and raster
+  from 25.5 to 5.9 ms.
 - Draw calls do not grow with the number of dots — `test/dot_grid_test.dart`:
   a 65×53 grid and a 2×2 grid of the same three colours both make 3 calls.
   The per-dot painter fails it.
@@ -143,6 +144,11 @@ matters is enforced by scripts in `tool/`, not by prose.
   because a round point and a circle anti-alias differently at some sub-pixel
   positions and touching dots composite in another order. Exact equality held
   only at the positions the old tests happened to use.
+- 2026-11-12 A release tag waits for an explicit yes, given on the release MR
+  or its issue; an approval or a merge is not that yes. An MR's "After merge"
+  steps wait until its reviews have been read — 0.2.3 was tagged 52 seconds
+  after #43 merged, though review 531 on it said the merge was not the
+  go-ahead (#45).
 
 ## Open
 

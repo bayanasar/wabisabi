@@ -16,7 +16,8 @@
   in one app's grid at its default density, it was at most 12/255.
 - 0.2.2 said each grid dot draws exactly what a `WabInkDot` of its style draws.
   That holds at the positions its tests use. At other sub-pixel positions the
-  two differ in pixels within a device pixel of the dot's edge, by up to
+  two differ in pixels within a device pixel of the dot's edge: a scratch
+  sweep of 2,160 single dots, not a test, found 120 such pixels, by up to
   95/255 in a channel.
 - `WabDotGrid` no longer mirrors under right-to-left text, a change made in
   0.2.2 and not recorded there. Column 0 is at the left in every direction, and
