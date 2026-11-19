@@ -16,17 +16,19 @@ matters is enforced by scripts in `tool/`, not by prose.
 ## Sealed
 
 - Forge CI runs the whole gate, release APK included, on the `linux-docker`
-  runner — `3c83474`, tagged `0.2.3`: run 58 (pull request), run 60 (`main`
-  push) and run 61 (tag push) success; `29d3e9b` (#47): run 69 (pull request)
-  and run 68 (`main` push) success.
+  runner — `16392f6`, tagged `0.2.4`: run 72 (pull request), run 73 (`main`
+  push) and run 74 (tag push) success.
 - Chinese in the monospace chain is drawn in WabKai —
   `test/font_fallback_test.dart` loads both bundled faces and draws on a fixed
   baseline at 32 px: 事 through `kWabMonoFallback` matches 事 in WabKai pixel
   for pixel; `g` matches WabMono and differs from WabKai, so the faces did
   load. With WabKai taken out of the chain it fails (pixel 8120: 0, not 77).
-- The same, in a consuming app — its Linux release build on a desktop with no
-  CJK font (`fc-list :lang=zh` empty): against 0.2.3 a category name in a mono
-  line drew as two empty boxes; against #47, in Kai.
+- The same, in a consuming app, on all three targets against 0.2.4's commit —
+  where 0.2.3 drew its mono Chinese as empty boxes on a Linux desktop with no
+  CJK font (`fc-list :lang=zh` empty), in the system sans on a Pixel 9 Pro XL
+  and in a network-fetched Noto on web, its Linux release build, its phone
+  build and its web build at 390, 860, 1000 and 1400 px all draw it in Kai,
+  with no overflow.
 - Batching the fills cut a phone's raster to the floor — a consuming app's
   release build on a Pixel 9 Pro XL (Impeller, Vulkan), its 3,390-dot grid
   against `main` and against the batched painter, alternating over 6 runs of
@@ -87,12 +89,6 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Not sealed
 
-- 0.2.4 is not tagged — it waits for Bayanasar's explicit yes on its release
-  MR. Until then an app pinned to a tag still draws mono CJK in a system face.
-- Mono CJK after the fix on Android and web — those two were seen only before
-  it (a system sans on a phone; Noto fetched over the network on web). If the
-  bundled Kai sits unevenly beside JetBrains Mono there, only a look at a
-  device or a browser shows it.
 - Batched fills on Impeller where dots touch — the phone was measured only at
   the app's default density, where gaps are over a device pixel. Below that,
   touching points in one draw may composite differently from the test
