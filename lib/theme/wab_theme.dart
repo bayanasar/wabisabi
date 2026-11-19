@@ -30,9 +30,13 @@ const List<String> kWabDisplayFallback = [
 ];
 
 /// Monospace fallback chain — for code and English labels. First entry is
-/// the bundled JetBrains Mono (pubspec family `WabMono`).
+/// the bundled JetBrains Mono (pubspec family `WabMono`). It has no CJK, so
+/// the bundled 文楷 comes next: a Chinese word in a monospace label is drawn
+/// in the kit's own Kai rather than whatever face the system has, or none.
+/// The system names below are pure last-resort fallbacks.
 const List<String> kWabMonoFallback = [
   'packages/wabisabi/WabMono',
+  'packages/wabisabi/WabKai',
   'JetBrains Mono',
   'SF Mono',
   'SFMono-Regular',

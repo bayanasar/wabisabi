@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- `kWabMonoFallback` now lists the bundled WabKai right after WabMono.
+  JetBrains Mono has no CJK, and the chain went on to system faces only, so a
+  Chinese word in a monospace label was drawn in whatever face the system had.
+  - On Android that was its sans-serif CJK face, not Kai.
+  - On a Linux desktop with no CJK font it was a row of empty boxes.
+  - On the web it was a Noto Sans CJK face, which Flutter fetches over the
+    network.
+
+  Latin text in the chain is unchanged.
+
 ## 0.2.3
 
 ### Changed

@@ -57,7 +57,8 @@ The package bundles its own faces so consumers never depend on a system font:
 - **WabKai** — [LXGW WenKai TC](https://github.com/lxgw/LxgwWenKaiTC) (霞鶩文楷 TC),
   繁簡全覆蓋, Regular and Medium.
 - **WabMono** — [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono),
-  static 400/500 instances.
+  static 400/500 instances. It has no CJK; `kWabMonoFallback` puts WabKai
+  next, so Chinese in a monospace label is drawn in WabKai too.
 
 Both are licensed **SIL Open Font License 1.1**, not under this package's
 licence. The full OFL texts ship in `assets/fonts/`. The files are renamed
