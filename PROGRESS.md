@@ -1,9 +1,9 @@
 # PROGRESS — wabisabi
 
 <!-- progress -->
-updated: 2026-11-07
+updated: 2026-11-19
 owner: bayanasar
-stage: 0.2.3 — `WabDotGrid` batches its fills, one draw per colour and radius; a phone's tap frame rasters in 6.5 ms, not 26
+stage: 0.2.4 — Chinese in monospace text is drawn in the bundled Kai, not in whatever face the system has
 <!-- /progress -->
 
 ## What this is
@@ -17,7 +17,16 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 - Forge CI runs the whole gate, release APK included, on the `linux-docker`
   runner — `3c83474`, tagged `0.2.3`: run 58 (pull request), run 60 (`main`
-  push) and run 61 (tag push) success.
+  push) and run 61 (tag push) success; `29d3e9b` (#47): run 69 (pull request)
+  and run 68 (`main` push) success.
+- Chinese in the monospace chain is drawn in WabKai —
+  `test/font_fallback_test.dart` loads both bundled faces and draws on a fixed
+  baseline at 32 px: 事 through `kWabMonoFallback` matches 事 in WabKai pixel
+  for pixel; `g` matches WabMono and differs from WabKai, so the faces did
+  load. With WabKai taken out of the chain it fails (pixel 8120: 0, not 77).
+- The same, in a consuming app — its Linux release build on a desktop with no
+  CJK font (`fc-list :lang=zh` empty): against 0.2.3 a category name in a mono
+  line drew as two empty boxes; against #47, in Kai.
 - Batching the fills cut a phone's raster to the floor — a consuming app's
   release build on a Pixel 9 Pro XL (Impeller, Vulkan), its 3,390-dot grid
   against `main` and against the batched painter, alternating over 6 runs of
@@ -53,11 +62,11 @@ matters is enforced by scripts in `tool/`, not by prose.
 - The grid does not mirror under right-to-left text — the same test file renders
   that 3×4 grid under `rtl` and under `ltr` at 3x: 0 differing pixels. With the
   painter flipped under RTL, the test fails.
-- Contract checks on the 0.2.3 branch — `flutter analyze` no issues;
+- Contract checks on the 0.2.4 branch — `flutter analyze` no issues;
   `check_layering` 54 files, no cycles; `check_public_api` 211 names, 0
   violations; `check_house_rules` 59 files clean; `export_tokens` leaves
   `web/quarto/` unchanged.
-- Tests on the 0.2.3 branch — `flutter test` 33 green (14 for the dot grid);
+- Tests on the 0.2.4 branch — `flutter test` 34 green (14 for the dot grid);
   `cd example && flutter test` 45 green (38 catalogue sweeps over 13 widths and
   5 text scales, 7 reading-floor widths).
 - The light theme was pixel-identical before and after the first lamplight pass
@@ -78,6 +87,12 @@ matters is enforced by scripts in `tool/`, not by prose.
 
 ## Not sealed
 
+- 0.2.4 is not tagged — it waits for Bayanasar's explicit yes on its release
+  MR. Until then an app pinned to a tag still draws mono CJK in a system face.
+- Mono CJK after the fix on Android and web — those two were seen only before
+  it (a system sans on a phone; Noto fetched over the network on web). If the
+  bundled Kai sits unevenly beside JetBrains Mono there, only a look at a
+  device or a browser shows it.
 - Batched fills on Impeller where dots touch — the phone was measured only at
   the app's default density, where gaps are over a device pixel. Below that,
   touching points in one draw may composite differently from the test
@@ -149,6 +164,12 @@ matters is enforced by scripts in `tool/`, not by prose.
   steps wait until its reviews have been read — 0.2.3 was tagged 52 seconds
   after #43 merged, though review 531 on it said the merge was not the
   go-ahead (#45).
+- 2026-11-19 `kWabMonoFallback` lists the bundled WabKai right after WabMono,
+  ahead of every system face — JetBrains Mono has no CJK, and the system
+  faces behind it drew Chinese as a sans on Android, as empty boxes on a Linux
+  desktop with no CJK font, and in a network-fetched Noto on web. A mixed line
+  can be a little taller than a Latin-only one, since it takes the larger
+  metrics; that is the price of drawing the glyphs at all (review 781).
 
 ## Open
 
